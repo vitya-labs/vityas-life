@@ -34,7 +34,7 @@
       <div class="brandwrap">
         <div class="brand">Vitya's Life</div>
         <div class="rule"></div>
-        <div class="meta">Level: 1-4</div>
+        <div class="meta" id="levelMeta">Level: 1/6</div>
       </div>
       <div class="tools">
         <button class="pill" id="helpBtn" type="button">Help</button>
@@ -124,7 +124,7 @@
     <div class="winCard">
       <small>Quarterly review</small>
       <h2>You are a loser!</h2>
-      <p>All folders are in the correct trays. Somehow that still counts as success here.</p>
+      <p id="winSummary">All folders are in the correct trays. Somehow that still counts as success here.</p>
       <div class="winRow">
         <button class="winBtn yes" id="newShiftBtn" type="button">New shift</button>
         <button class="winBtn" id="replayBtn" type="button">Replay board</button>
@@ -140,53 +140,164 @@
     const startBtn=document.getElementById("startBtn"),undoBtn=document.getElementById("undoBtn"),resetBtn=document.getElementById("resetBtn"),hintBtn=document.getElementById("hintBtn");
     const helpBtn=document.getElementById("helpBtn"),soundBtn=document.getElementById("soundBtn");
     const thought=document.getElementById("thought"),thoughtCopy=document.getElementById("thoughtCopy"),movesValue=document.getElementById("movesValue"),efficiencyFill=document.getElementById("efficiencyFill"),efficiencyMeta=document.getElementById("efficiencyMeta");
-    const win=document.getElementById("win"),replayBtn=document.getElementById("replayBtn"),newShiftBtn=document.getElementById("newShiftBtn");
+    const win=document.getElementById("win"),winSummary=document.getElementById("winSummary"),replayBtn=document.getElementById("replayBtn"),newShiftBtn=document.getElementById("newShiftBtn"),levelMeta=document.getElementById("levelMeta");
     const tips=[
       "\"Push the folders from the open side. Cubicle walls do not negotiate.\"",
       "\"Finished boxes glow green. That is the closest thing this company has to praise.\"",
       "\"Corners are the enemy. Plan the route before you improvise.\""
     ];
+    const BOX_NAMES=["AUTH","SCHED","DOC","FEE","NOTI","SD"];
+    const LEVELS=[
+      [
+        "####################",
+        "#                  #",
+        "#   ...    ...     #",
+        "#                  #",
+        "#      ####        #",
+        "#                  #",
+        "#   $$ $    $ $$   #",
+        "#        @         #",
+        "#                  #",
+        "#      ####        #",
+        "#                  #",
+        "#                  #",
+        "#                  #",
+        "#                  #",
+        "####################"
+      ],
+      [
+        "####################",
+        "#                  #",
+        "#   ...####...     #",
+        "#      #  #        #",
+        "#      #  #        #",
+        "#   ## #  # ##     #",
+        "#   $$ $  @ $ $$   #",
+        "#   ## #  # ##     #",
+        "#      #  #        #",
+        "#      #  #        #",
+        "#      ####        #",
+        "#                  #",
+        "#                  #",
+        "#                  #",
+        "####################"
+      ],
+      [
+        "####################",
+        "#                  #",
+        "#  ...      ...    #",
+        "#  ### #### ###    #",
+        "#                  #",
+        "#   ##      ##     #",
+        "#   $  $ ## $  $   #",
+        "#     $  @   $     #",
+        "#   ##    # ##     #",
+        "#        ##        #",
+        "#   ####    ####   #",
+        "#                  #",
+        "#                  #",
+        "#                  #",
+        "####################"
+      ],
+      [
+        "####################",
+        "#                  #",
+        "#   ..##..##..     #",
+        "#    #      #      #",
+        "#    # #### #      #",
+        "#    # #### #      #",
+        "# $$ #  @   # $$   #",
+        "#  $ ###### #  $   #",
+        "#    #      #      #",
+        "#    # ######      #",
+        "#    #             #",
+        "#                  #",
+        "#                  #",
+        "#                  #",
+        "####################"
+      ],
+      [
+        "####################",
+        "#                  #",
+        "#   ...####...     #",
+        "#   #          #   #",
+        "#   #  ######  #   #",
+        "#   #  #    #  #   #",
+        "#   $  # $$ #  $   #",
+        "#   $  # @  #  $   #",
+        "#      ######      #",
+        "#   #          #   #",
+        "#   ####    ####   #",
+        "#                  #",
+        "#                  #",
+        "#                  #",
+        "####################"
+      ],
+      [
+        "####################",
+        "#                  #",
+        "#   ...#    #...   #",
+        "#   #  # ## #  #   #",
+        "#   #    ##    #   #",
+        "#   ####    ####   #",
+        "#   $   ##@##  $   #",
+        "#   $ $  ##  $ $   #",
+        "#   #    ##    #   #",
+        "#   #  ######  #   #",
+        "#   #          #   #",
+        "#   ####    ####   #",
+        "#                  #",
+        "#                  #",
+        "####################"
+      ]
+    ];
     const bgMusic=new Audio("assets/sounds/background.mp3");bgMusic.loop=true;
     const images={},imageFiles={box:"assets/images/box.png",player_down:"assets/images/player/player_down.png",player_up:"assets/images/player/player_up.png",player_left:"assets/images/player/player_left.png",player_right:"assets/images/player/player_right.png"};
-    let loaded=0,ready=false,pendingStart=false,audioStarted=false,soundOn=true,loop=0,hintsOn=true,game=null;
+    let loaded=0,ready=false,pendingStart=false,audioStarted=false,soundOn=true,loop=0,hintsOn=true,game=null,currentLevel=0;
     function cloneBoxes(boxes){return boxes.map((box)=>({name:box.name,coords:{x:box.coords.x,y:box.coords.y}}));}
+    function parseLevel(layout){
+      const level=[],boxes=[],targets=[];
+      let playerPos=null,boxIndex=0;
+      for(const row of layout){
+        let tiles="";
+        for(let x=0;x<row.length;x+=1){
+          const tile=row[x];
+          if(tile==="#"){tiles+="#";continue;}
+          tiles+=" ";
+          if(tile==="."){targets.push({x,y:level.length});continue;}
+          if(tile==="@"){playerPos={x,y:level.length};continue;}
+          if(tile==="$"){
+            boxes.push({coords:{x,y:level.length},name:BOX_NAMES[boxIndex]});
+            boxIndex+=1;
+          }
+        }
+        level.push(tiles);
+      }
+      if(!playerPos||boxes.length!==BOX_NAMES.length||targets.length!==BOX_NAMES.length)throw new Error("Invalid level layout");
+      return{level,boxes,targets,playerPos};
+    }
     function startAudio(){if(!soundOn||audioStarted)return;bgMusic.play().then(()=>{audioStarted=true;}).catch(()=>{});}
     function stopAudio(){bgMusic.pause();audioStarted=false;}
     function loadImages(done){for(const [key,src] of Object.entries(imageFiles)){const img=new Image();img.src=src;img.onload=img.onerror=()=>{loaded+=1;if(loaded===Object.keys(imageFiles).length){ready=true;done();}};images[key]=img;}}
     function setScreen(name){const start=name==="start";startScreen.classList.toggle("active",start);gameScreen.classList.toggle("active",!start);const active=!start&&!!game;resetBtn.disabled=!active;hintBtn.disabled=!active;undoBtn.disabled=!active||game.history.length===0;}
+    function updateLevelMeta(){levelMeta.textContent=`Level: ${currentLevel+1}/${LEVELS.length}`;}
     function updateTip(seed){thoughtCopy.textContent=tips[seed%tips.length];}
-    function updateHud(){if(!game){movesValue.textContent="0";efficiencyFill.style.width="0%";efficiencyMeta.textContent="0 / 6 tasks filed";return;}const done=game.doneCount(),total=game.targets.length,pct=Math.round(done/total*100);movesValue.textContent=String(game.moves);efficiencyFill.style.width=pct+"%";efficiencyMeta.textContent=done+" / "+total+" tasks filed";undoBtn.disabled=!gameScreen.classList.contains("active")||game.history.length===0;resetBtn.disabled=!gameScreen.classList.contains("active");hintBtn.disabled=!gameScreen.classList.contains("active");}
+    function updateHud(){if(!game){movesValue.textContent="0";efficiencyFill.style.width="0%";efficiencyMeta.textContent=`0 / ${BOX_NAMES.length} tasks filed`;return;}const done=game.doneCount(),total=game.targets.length,pct=Math.round(done/total*100);movesValue.textContent=String(game.moves);efficiencyFill.style.width=pct+"%";efficiencyMeta.textContent=done+" / "+total+" tasks filed";undoBtn.disabled=!gameScreen.classList.contains("active")||game.history.length===0;resetBtn.disabled=!gameScreen.classList.contains("active");hintBtn.disabled=!gameScreen.classList.contains("active");}
     function showWin(){win.classList.add("open");}
     function hideWin(){win.classList.remove("open");}
     class Game{
-      constructor(){
-        this.level=[
-          "####################",
-          "#                  #",
-          "#                  #",
-          "#        ##        #",
-          "#        ##        #",
-          "#        ##        #",
-          "#        ##        #",
-          "#        ##        #",
-          "#        ##        #",
-          "#        ##        #",
-          "#        ##        #",
-          "#        ##        #",
-          "#                  #",
-          "#                  #",
-          "####################"
-        ];
-        const names=["AUTH","SCHED","DOC","FEE","NOTI","SD"];
-        this.boxes=[];this.targets=[];this.playerDirection="down";this.playerPos={x:1,y:1};this.moves=0;this.won=false;this.history=[];
-        this.place(names);this.initial=this.snap();
+      constructor(levelIndex){
+        const config=parseLevel(LEVELS[levelIndex]);
+        this.level=config.level;
+        this.boxes=cloneBoxes(config.boxes);
+        this.targets=config.targets.map((target)=>({x:target.x,y:target.y}));
+        this.playerDirection="down";this.playerPos={x:config.playerPos.x,y:config.playerPos.y};this.moves=0;this.won=false;this.history=[];
+        this.initial=this.snap();
       }
       snap(){return{playerPos:{x:this.playerPos.x,y:this.playerPos.y},playerDirection:this.playerDirection,boxes:cloneBoxes(this.boxes),moves:this.moves};}
       restore(state){this.playerPos={x:state.playerPos.x,y:state.playerPos.y};this.playerDirection=state.playerDirection;this.boxes=cloneBoxes(state.boxes);this.moves=state.moves;this.won=false;}
       reset(){this.history=[];this.restore(this.initial);}
       undo(){const prev=this.history.pop();if(prev)this.restore(prev);}
-      freePos(used){const rows=this.level.length,cols=this.level[0].length;while(true){const x=Math.floor(Math.random()*(cols-4))+2,y=Math.floor(Math.random()*(rows-4))+2;if(this.level[y][x]==="#")continue;if(used.some((p)=>p.x===x&&p.y===y))continue;return{x,y};}}
-      place(names){const used=[{x:this.playerPos.x,y:this.playerPos.y}];for(const name of names){const boxPos=this.freePos(used);used.push(boxPos);this.boxes.push({coords:boxPos,name});const targetPos=this.freePos(used);used.push(targetPos);this.targets.push(targetPos);}}
       isWall(pos){return this.level[pos.y]?.[pos.x]==="#";}
       onTarget(pos){return this.targets.some((t)=>t.x===pos.x&&t.y===pos.y);}
       doneCount(){return this.boxes.filter((box)=>this.onTarget(box.coords)).length;}
@@ -214,8 +325,10 @@
     }
     function render(){if(!game)return;game.draw();updateHud();if(!game.won&&game.checkWin()){game.won=true;showWin();return;}loop=requestAnimationFrame(render);}
     function restartLoop(){if(loop)cancelAnimationFrame(loop);loop=requestAnimationFrame(render);}
-    function newGame(){game=new Game();hideWin();updateTip(game.moves);updateHud();restartLoop();}
+    function syncWinState(){const finalLevel=currentLevel===LEVELS.length-1;newShiftBtn.textContent=finalLevel?"Start over":"Next shift";winSummary.textContent=finalLevel?"All folders are filed. The office found six more shifts for you anyway.":"All folders are in the correct trays. Somehow that still counts as success here.";}
+    function newGame(levelIndex=currentLevel){currentLevel=(levelIndex+LEVELS.length)%LEVELS.length;game=new Game(currentLevel);hideWin();updateLevelMeta();syncWinState();updateTip(game.moves+currentLevel);updateHud();restartLoop();}
     function replayBoard(){if(!game)return;game.reset();hideWin();updateTip(game.moves);updateHud();restartLoop();}
+    function nextLevel(){newGame((currentLevel+1)%LEVELS.length);}
     function beginGame(){startAudio();if(!ready){pendingStart=true;startBtn.querySelector("span").textContent="Loading paperwork...";return;}setScreen("game");newGame();}
     function toggleHints(){hintsOn=!hintsOn;thought.classList.toggle("hidden",!hintsOn);}
     function about(){window.alert("Push every labeled crate onto a glowing tray.\nArrow keys move. Z undoes the last move. R resets the current board.");}
@@ -226,7 +339,7 @@
     resetBtn.addEventListener("click",replayBoard);
     hintBtn.addEventListener("click",toggleHints);
     replayBtn.addEventListener("click",replayBoard);
-    newShiftBtn.addEventListener("click",newGame);
+    newShiftBtn.addEventListener("click",nextLevel);
     document.addEventListener("click",()=>{if(gameScreen.classList.contains("active"))startAudio();});
     document.addEventListener("keydown",(event)=>{
       const onStart=startScreen.classList.contains("active");
@@ -244,6 +357,7 @@
       }
       updateTip(game.moves);updateHud();restartLoop();
     });
+    updateLevelMeta();
     loadImages(()=>{if(pendingStart)beginGame();else{ctx.fillStyle=COLORS.surface;ctx.fillRect(0,0,WIDTH,HEIGHT);}});
   </script>
 </body>
