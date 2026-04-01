@@ -113,6 +113,8 @@ jobs:
     needs: [changes, push-image]
     if: needs.changes.outputs.app == 'true'
     runs-on: ubuntu-latest
+    env:
+      SLACK_DEPLOY_WEBHOOK_URL: ${{ secrets.SLACK_DEPLOY_WEBHOOK_URL }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup SSH
@@ -133,6 +135,22 @@ jobs:
             docker compose pull ${{ env.SERVICE_NAME }}
             docker compose up -d ${{ env.SERVICE_NAME }}
           "
+      - name: Notify Slack about successful deploy
+        if: success() && env.SLACK_DEPLOY_WEBHOOK_URL != ''
+        continue-on-error: true
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          curl --silent --show-error --fail-with-body \
+            -X POST \
+            -H 'Content-type: application/json' \
+            --data "$(cat <<EOF
+          {
+            "text": "👨 VITYAS-LIFE deployed on `${{ github.ref_name }}`\nRepository: `${{ github.repository }}`\nCommit: `${{ github.sha }}`\nTriggered by: `${{ github.actor }}`\nRun: <${RUN_URL}|Open GitHub Actions run>"
+          }
+          EOF
+          )" \
+            "$SLACK_DEPLOY_WEBHOOK_URL"
 
   cleanup-images:
     name: Cleanup images
