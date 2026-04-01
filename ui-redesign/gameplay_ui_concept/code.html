@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vitya's Life - Gameplay</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;family=Be+Vietnam+Pro:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary": "#006b1b",
+              "primary": "#705900",
+              "surface-bright": "#fff5e4",
+              "tertiary-fixed": "#70b5ff",
+              "outline-variant": "#b4ac9c",
+              "on-background": "#332e23",
+              "tertiary-fixed-dim": "#4ca8ff",
+              "surface-tint": "#705900",
+              "surface-container-low": "#faf0dd",
+              "on-surface-variant": "#615b4e",
+              "surface-dim": "#ded3bc",
+              "on-tertiary-fixed-variant": "#003b67",
+              "on-primary-fixed": "#463600",
+              "on-primary-fixed-variant": "#675200",
+              "outline": "#7d7668",
+              "error-dim": "#b92902",
+              "error-container": "#f95630",
+              "tertiary": "#005e9f",
+              "on-primary-container": "#5c4900",
+              "tertiary-dim": "#00528b",
+              "secondary-fixed-dim": "#83e881",
+              "primary-dim": "#624d00",
+              "on-error-container": "#520c00",
+              "inverse-primary": "#fdd34d",
+              "secondary-dim": "#005d16",
+              "background": "#fff5e4",
+              "inverse-on-surface": "#a49c8d",
+              "surface-container": "#f1e7d3",
+              "on-tertiary": "#edf3ff",
+              "tertiary-container": "#70b5ff",
+              "on-tertiary-container": "#003258",
+              "error": "#b02500",
+              "surface-variant": "#e7dcc5",
+              "surface-container-high": "#ece1cc",
+              "primary-fixed-dim": "#eec540",
+              "on-secondary-fixed-variant": "#00691a",
+              "on-secondary-container": "#005e17",
+              "primary-container": "#fdd34d",
+              "on-primary": "#fff2d4",
+              "inverse-surface": "#110e05",
+              "secondary-container": "#91f78e",
+              "on-tertiary-fixed": "#001930",
+              "surface": "#fff5e4",
+              "on-secondary": "#d1ffc8",
+              "primary-fixed": "#fdd34d",
+              "on-error": "#ffefec",
+              "secondary-fixed": "#91f78e",
+              "on-surface": "#332e23",
+              "surface-container-lowest": "#ffffff",
+              "on-secondary-fixed": "#00480f",
+              "surface-container-highest": "#e7dcc5"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Be Vietnam Pro"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .cubicle-wall {
+            background-color: #d1d5db;
+            background-image: radial-gradient(#9ca3af 0.5px, transparent 0.5px);
+            background-size: 4px 4px;
+        }
+        .office-carpet {
+            background-color: #374151;
+            background-image: 
+                linear-gradient(45deg, #2d3748 25%, transparent 25%, transparent 75%, #2d3748 75%, #2d3748),
+                linear-gradient(45deg, #2d3748 25%, transparent 25%, transparent 75%, #2d3748 75%, #2d3748);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+        }
+        .glass-blur {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface overflow-hidden h-screen w-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-3 bg-[#fff5e4] dark:bg-[#1a1a1a]">
+<div class="flex items-center gap-4">
+<h1 class="text-2xl font-black text-[#705900] dark:text-[#fdd34d] uppercase font-['Space_Grotesk'] tracking-tight">Vitya's Life</h1>
+<div class="h-[2px] w-12 bg-[#ded3bc] dark:bg-[#333333]"></div>
+<span class="text-[#7d7668] font-['Space_Grotesk'] font-bold text-sm uppercase">Level: 1-4</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined p-2 rounded hover:bg-[#fdd34d]/20 transition-colors text-[#705900] dark:text-[#fdd34d] active:scale-95 duration-75">settings</button>
+<button class="material-symbols-outlined p-2 rounded hover:bg-[#fdd34d]/20 transition-colors text-[#705900] dark:text-[#fdd34d] active:scale-95 duration-75">help</button>
+</div>
+</header>
+<div class="flex h-full pt-[52px]">
+<!-- SideNavBar (Employee Portal) -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-[#f1e7d3] dark:bg-[#252525] flex flex-col py-8 z-40 hidden md:flex">
+<div class="px-8 mb-10">
+<div class="w-16 h-16 bg-surface-container-highest rounded-xl mb-4 overflow-hidden shadow-sm">
+<img alt="Employee Portrait" class="w-full h-full object-cover" data-alt="pixelated character portrait of a tired office worker with messy hair and glasses in a yellow sweater" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCenoxeqiPBtszDmaZ6fgttCC9FljpzEQTwwLTxir4uXbxMjBiZrQQW4MEBFXGvkDng_Wj_fmtzrtdGMtEfoIq52-51NBtEXYUenNXCAQV5g9QXJDfmeI_W96VbutAP80IgvElfh4Ql5lBaiDI4y0k12mVlBEQtMgbyvCwz1u8pTqd_l13-13-ew6IZeFgHBc4XiHZiZ10Mflh79cEgyNQp0relELnEDfYMQ1nR53GxgywDzSRG5R4O5wmK1T785DBISOO5kOIUWOj0"/>
+</div>
+<h2 class="font-['Space_Grotesk'] font-extrabold text-[#705900] text-lg">Employee #802</h2>
+<p class="font-['Be_Vietnam_Pro'] text-sm font-medium text-[#7d7668]">Vitya's Desk</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 py-3 px-4 bg-[#fdd34d] text-[#705900] rounded-l-xl rounded-r-none ml-4 shadow-[-4px_0_0_0_#705900] font-['Be_Vietnam_Pro'] text-sm font-medium transition-transform hover:translate-x-1 skew-x-1" href="#">
+<span class="material-symbols-outlined">desktop_windows</span>
+<span>Desktop</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-4 text-[#7d7668] hover:bg-[#ded3bc]/50 mx-4 rounded-md font-['Be_Vietnam_Pro'] text-sm font-medium transition-transform hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span>Tasks</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-4 text-[#7d7668] hover:bg-[#ded3bc]/50 mx-4 rounded-md font-['Be_Vietnam_Pro'] text-sm font-medium transition-transform hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+<span>Archives</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-4 text-[#7d7668] hover:bg-[#ded3bc]/50 mx-4 rounded-md font-['Be_Vietnam_Pro'] text-sm font-medium transition-transform hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">coffee</span>
+<span>Break Room</span>
+</a>
+</nav>
+<div class="px-8 mt-auto">
+<button class="w-full bg-primary py-3 rounded-sm text-on-primary font-bold uppercase text-xs tracking-widest shadow-lg active:scale-95 transition-all">Clock Out</button>
+</div>
+</aside>
+<!-- Main Content Area: The Cubicle & Game Board -->
+<main class="flex-1 cubicle-wall relative flex items-center justify-center p-8 ml-0 md:ml-64 mb-16 md:mb-0">
+<!-- Pinned Memos & Sticky Notes -->
+<div class="absolute top-10 left-10 transform -rotate-3 bg-[#fdd34d] p-4 shadow-md w-32 h-32 flex flex-col justify-between border-b-2 border-[#705900]">
+<span class="text-[10px] font-bold text-on-primary-container font-headline uppercase leading-tight">Project: Efficiency</span>
+<span class="text-xs font-body text-primary font-bold">Don't forget the AUTH boxes!</span>
+<div class="w-2 h-2 bg-red-800 rounded-full mx-auto -mt-6"></div> <!-- Pin -->
+</div>
+<div class="absolute bottom-20 right-10 transform rotate-6 bg-white p-2 shadow-lg border border-outline-variant/30">
+<img alt="Pinned Photo" class="w-24 h-24 object-cover mb-2" data-alt="small polaroid photo of a fluffy cat sitting on a keyboard with soft office lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8XwAQUNfeYPtAJOCg23ByHSEPcQqoKVTOWs3wRunwde8scCB4108JyZcEPRzbJgdZdTUCZHiMW5ZJ8jKdt-5f4bNVuOC5oUlkP5AlYUoSEnDZ0iGNd3Em4ZHjXh1_sIpbzYJMVoPtspBH5k3WlS10wPDmbJaxgJ25aYRU7u3rE21eqSF86V8z3pX0NsNH5cZvOT2quPkfQ8_UlyJgvFlbENAz61I2uEmic3PhkJ1eXS1upKsBOedRqA38GQKtb-KNdF-NJk1nVMY6"/>
+<p class="text-[8px] text-center text-outline uppercase font-headline">Borscht at rest</p>
+</div>
+<div class="absolute top-20 right-20 transform -rotate-12 bg-surface-container-low p-4 shadow-sm w-40 border-l-4 border-tertiary">
+<h4 class="text-[10px] font-bold text-tertiary mb-1">MEMO 48-A</h4>
+<p class="text-[9px] leading-tight text-on-surface-variant font-body">Re-arrange internal documentation by end of business. Late submissions will result in mandatory training.</p>
+</div>
+<!-- Game Dashboard (Desk Clock Style) -->
+<div class="absolute top-8 left-1/2 -translate-x-1/2 z-10 flex gap-6">
+<div class="bg-inverse-surface text-primary-container px-6 py-3 rounded-xl shadow-xl flex flex-col items-center border-t-4 border-surface-container-highest">
+<span class="text-[10px] uppercase font-headline tracking-widest text-outline">Moves</span>
+<span class="text-3xl font-black font-headline">12</span>
+</div>
+<div class="bg-surface-container-highest px-8 py-3 rounded-xl shadow-inner flex flex-col items-center justify-center border-b-2 border-outline-variant/20">
+<span class="text-[10px] uppercase font-headline tracking-widest text-[#705900]">Efficiency</span>
+<div class="w-24 h-2 bg-surface-container rounded-full mt-1 relative overflow-hidden">
+<div class="absolute left-0 top-0 h-full w-[72%] bg-secondary rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- The Sokoban Board -->
+<div class="office-carpet p-4 rounded-xl shadow-2xl border-[12px] border-surface-dim relative group">
+<!-- Lighting Effect Overlay -->
+<div class="absolute inset-0 bg-gradient-to-tr from-black/20 to-white/10 pointer-events-none rounded-sm"></div>
+<div class="grid grid-cols-7 grid-rows-7 gap-1">
+<!-- Wall Tiles (Office Dividers) -->
+<template id="tile-wall">
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+</template>
+<!-- Floor Tiles (Empty) -->
+<template id="tile-floor">
+<div class="w-12 h-12 flex items-center justify-center opacity-40">
+<div class="w-1 h-1 bg-white/5 rounded-full"></div>
+</div>
+</template>
+<!-- Render board manual simulation -->
+<!-- Row 1: Walls -->
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<!-- Row 2 -->
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12"></div>
+<div class="w-12 h-12 bg-secondary-container/30 border-2 border-secondary-container shadow-[0_0_15px_rgba(145,247,142,0.4)] rounded-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-xs opacity-50">target</span>
+</div>
+<div class="w-12 h-12"></div>
+<div class="w-12 h-12"></div>
+<div class="w-12 h-12 bg-secondary-container/30 border-2 border-secondary-container shadow-[0_0_15px_rgba(145,247,142,0.4)] rounded-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-xs opacity-50">target</span>
+</div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<!-- Row 3 -->
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12"></div>
+<!-- The Player -->
+<div class="w-12 h-12 flex items-center justify-center relative">
+<div class="w-10 h-10 bg-primary rounded-lg border-2 border-primary-container shadow-lg flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-on-primary">face</span>
+</div>
+<div class="absolute -bottom-1 w-8 h-2 bg-black/40 blur-sm rounded-full"></div>
+</div>
+<div class="w-12 h-12"></div>
+<!-- A Box -->
+<div class="w-12 h-12 flex items-center justify-center relative">
+<div class="w-10 h-10 bg-[#e7dcc5] border-2 border-[#b4ac9c] shadow-md flex flex-col items-center justify-center z-10 rounded-sm">
+<span class="text-[8px] font-headline font-black text-outline">AUTH</span>
+<div class="w-6 h-1 bg-[#b4ac9c]/30 mt-1"></div>
+</div>
+<div class="absolute -bottom-1 w-8 h-2 bg-black/40 blur-sm rounded-full"></div>
+</div>
+<div class="w-12 h-12"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<!-- Row 4 -->
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12"></div>
+<div class="w-12 h-12"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<!-- Row 5 -->
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12"></div>
+<!-- Box on Target -->
+<div class="w-12 h-12 bg-secondary-container/30 border-2 border-secondary-container flex items-center justify-center relative">
+<div class="w-10 h-10 bg-secondary border-2 border-secondary-fixed shadow-md flex flex-col items-center justify-center z-10 rounded-sm">
+<span class="text-[8px] font-headline font-black text-on-secondary">DOC</span>
+<span class="material-symbols-outlined text-[10px] text-on-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<div class="w-12 h-12"></div>
+<!-- Box -->
+<div class="w-12 h-12 flex items-center justify-center relative">
+<div class="w-10 h-10 bg-[#e7dcc5] border-2 border-[#b4ac9c] shadow-md flex flex-col items-center justify-center z-10 rounded-sm">
+<span class="text-[8px] font-headline font-black text-outline">SCHED</span>
+<div class="w-6 h-1 bg-[#b4ac9c]/30 mt-1"></div>
+</div>
+</div>
+<div class="w-12 h-12"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<!-- Row 6 -->
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12"></div>
+<div class="w-12 h-12"></div>
+<div class="w-12 h-12"></div>
+<div class="w-12 h-12"></div>
+<div class="w-12 h-12 bg-secondary-container/30 border-2 border-secondary-container shadow-[0_0_15px_rgba(145,247,142,0.4)] rounded-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-xs opacity-50">target</span>
+</div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<!-- Row 7 -->
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+<div class="w-12 h-12 bg-surface-container border-b-4 border-r-4 border-outline-variant/50 rounded-sm"></div>
+</div>
+</div>
+<!-- Controller Hint (Desk Mat Style) -->
+<div class="absolute bottom-8 left-1/2 -translate-x-1/2 px-10 py-2 bg-surface-container-low border-t border-outline-variant/20 rounded-full opacity-60 flex gap-4 text-[10px] font-headline font-bold uppercase tracking-widest text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">keyboard_arrow_up</span> Move</span>
+<span class="flex items-center gap-1"><kbd class="bg-surface-variant px-1 rounded">R</kbd> Reset</span>
+<span class="flex items-center gap-1"><kbd class="bg-surface-variant px-1 rounded">Z</kbd> Undo</span>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (The Action Bar) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#fff5e4]/85 dark:bg-[#1a1a1a]/85 backdrop-blur-md shadow-[0_-4px_10px_rgba(0,0,0,0.05)] border-t-2 border-[#b4ac9c]/15">
+<button class="flex flex-col items-center justify-center text-[#7d7668] p-2 hover:-rotate-1 transition-transform group">
+<span class="material-symbols-outlined text-2xl">undo</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase font-bold">Undo</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-[#fdd34d] text-[#705900] rounded-sm p-2 rotate-1 shadow-sm active:scale-90 transition-all">
+<span class="material-symbols-outlined text-2xl">refresh</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase font-bold">Reset</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#7d7668] p-2 hover:-rotate-1 transition-transform group">
+<span class="material-symbols-outlined text-2xl">lightbulb</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase font-bold">Hints</span>
+</button>
+</nav>
+<!-- Floating UI: Thought Bubble (Glassmorphism card) -->
+<div class="fixed top-24 right-8 w-64 glass-blur bg-white/80 p-5 rounded-2xl shadow-2xl border border-white/20 transform hover:-translate-y-1 transition-transform">
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">chat</span>
+</div>
+<div>
+<h5 class="text-[10px] font-bold text-tertiary uppercase mb-1 font-headline">Internal Monologue</h5>
+<p class="text-xs italic text-on-surface-variant font-medium">"If I finish these boxes by 5, maybe I can actually go home for once..."</p>
+</div>
+</div>
+<div class="absolute -bottom-2 right-8 w-4 h-4 bg-white/80 rotate-45 border-r border-b border-white/20"></div>
+</div>
+</body></html>
