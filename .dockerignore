@@ -1,0 +1,12 @@
+.git
+.github
+.gitpod.yml
+.idea
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+main.py
+requirements.txt
+README*
