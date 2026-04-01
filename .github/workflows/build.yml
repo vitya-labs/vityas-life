@@ -130,7 +130,6 @@ jobs:
           ssh -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "
             set -e
             cd ${{ env.DEPLOY_PATH }}
-            printf 'IMAGE_NAME=%s\nIMAGE_TAG=%s\nHOST_PORT=%s\n' '${{ env.IMAGE_NAME }}' '${{ github.ref_name }}' '8080' > .env
             docker compose pull ${{ env.SERVICE_NAME }}
             docker compose up -d ${{ env.SERVICE_NAME }}
           "

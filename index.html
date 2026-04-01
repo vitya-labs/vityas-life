@@ -172,7 +172,7 @@
         "#      #  #        #",
         "#      #  #        #",
         "#   ## #  # ##     #",
-        "#   $$ $  @ $ $$   #",
+        "#   $ $ $  @ $ $ $ #",
         "#   ## #  # ##     #",
         "#      #  #        #",
         "#      #  #        #",
@@ -319,7 +319,7 @@
         ctx.fillStyle=COLORS.veil;ctx.fillRect(0,0,WIDTH,HEIGHT);
       }
       drawTargets(){for(const t of this.targets){const px=t.x*TILE,py=t.y*TILE;ctx.fillStyle=COLORS.targetGlow;ctx.fillRect(px+2,py+2,TILE-4,TILE-4);ctx.strokeStyle=COLORS.target;ctx.lineWidth=2;ctx.strokeRect(px+4,py+4,TILE-8,TILE-8);ctx.fillStyle="rgba(145,247,142,.24)";ctx.beginPath();ctx.arc(px+TILE/2,py+TILE/2,5,0,Math.PI*2);ctx.fill();}}
-      drawBoxes(){for(const box of this.boxes){const{x,y}=box.coords,px=x*TILE,py=y*TILE,on=this.onTarget(box.coords);ctx.fillStyle=COLORS.shadow;ctx.beginPath();ctx.ellipse(px+TILE/2,py+TILE-3,14,6,0,0,Math.PI*2);ctx.fill();if(on){ctx.fillStyle="rgba(0,107,27,.32)";ctx.fillRect(px+5,py+5,TILE-10,TILE-10);}ctx.drawImage(images.box,px+4,py+4,TILE-8,TILE-8);if(on){ctx.strokeStyle=COLORS.target;ctx.lineWidth=2;ctx.strokeRect(px+5,py+5,TILE-10,TILE-10);}ctx.fillStyle=on?"#edf9ea":COLORS.text;ctx.font="700 10px 'Space Grotesk', sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(box.name,px+TILE/2,py+TILE/2);}}
+      drawBoxes(){for(const box of this.boxes){const{x,y}=box.coords,px=x*TILE,py=y*TILE,on=this.onTarget(box.coords);ctx.fillStyle=COLORS.shadow;ctx.beginPath();ctx.ellipse(px+TILE/2,py+TILE-3,14,6,0,0,Math.PI*2);ctx.fill();if(on){ctx.fillStyle="rgba(0,107,27,.32)";ctx.fillRect(px+5,py+5,TILE-10,TILE-10);}ctx.drawImage(images.box,px+4,py+4,TILE-8,TILE-8);if(on){ctx.strokeStyle=COLORS.target;ctx.lineWidth=2;ctx.strokeRect(px+5,py+5,TILE-10,TILE-10);}ctx.fillStyle=on?"rgba(12,73,23,.84)":"rgba(255,247,230,.92)";ctx.fillRect(px+5,py+14,TILE-10,12);ctx.strokeStyle=on?"rgba(237,249,234,.7)":"rgba(51,46,35,.22)";ctx.lineWidth=1;ctx.strokeRect(px+5.5,py+14.5,TILE-11,11);ctx.font="900 8.5px 'Space Grotesk', sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.lineJoin="round";ctx.lineWidth=2.6;ctx.strokeStyle=on?"rgba(12,73,23,.92)":"rgba(255,247,230,.95)";ctx.strokeText(box.name,px+TILE/2,py+TILE/2+0.5);ctx.fillStyle=on?"#edf9ea":"#2c2418";ctx.fillText(box.name,px+TILE/2,py+TILE/2+0.5);}}
       drawPlayer(){const px=this.playerPos.x*TILE,py=this.playerPos.y*TILE,sprite=images["player_"+this.playerDirection];ctx.fillStyle=COLORS.halo;ctx.beginPath();ctx.arc(px+TILE/2,py+TILE/2,14,0,Math.PI*2);ctx.fill();ctx.fillStyle=COLORS.shadow;ctx.beginPath();ctx.ellipse(px+TILE/2,py+TILE-3,14,6,0,0,Math.PI*2);ctx.fill();ctx.drawImage(sprite,px+2,py+2,TILE-4,TILE-4);}
       draw(){this.drawBase();this.drawTargets();this.drawBoxes();this.drawPlayer();}
     }
