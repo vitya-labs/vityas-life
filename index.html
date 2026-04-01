@@ -4,86 +4,163 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vitya's Life</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet" />
   <style>
-    body {
-      margin: 0;
-      background: #222;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-family: sans-serif;
-    }
-    canvas {
-      display: block;
-      image-rendering: pixelated;
-    }
+    :root{--surface:#fff5e4;--low:#faf0dd;--panel:#f1e7d3;--high:#e7dcc5;--dim:#ded3bc;--ink:#332e23;--soft:#615b4e;--line:#7d7668;--primary:#705900;--yellow:#fdd34d;--green:#91f78e;--green-deep:#006b1b;--blue:#70b5ff;--blue-deep:#005e9f;--monitor:#141106;--floor-a:#2f3b4c;--floor-b:#364357;--shadow:0 20px 40px rgba(51,46,35,.14)}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;overflow:hidden;font-family:"Be Vietnam Pro",sans-serif;color:var(--ink);background:radial-gradient(circle at top left,rgba(255,255,255,.75),transparent 35%),linear-gradient(180deg,#fff7ea,#f4ead7)}body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:radial-gradient(circle at 1px 1px,rgba(51,46,35,.18) 1px,transparent 0);background-size:9px 9px}button{border:0;background:none;color:inherit;font:inherit;cursor:pointer}img{display:block;max-width:100%}
+    .app{min-height:100vh;padding:72px 0 92px;position:relative}.topbar{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px 22px;background:rgba(255,245,228,.92);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(180,172,156,.18)}.brandwrap,.tools{display:flex;align-items:center;gap:14px}.brand{font:800 1.85rem/1 "Space Grotesk",sans-serif;letter-spacing:-.06em;text-transform:uppercase;color:var(--primary)}.rule{width:36px;height:2px;border-radius:99px;background:var(--dim)}.meta,.pill,.hintBar,.action strong,.action span,.winCard small,.winBtn,.thoughtHead span,.card span,.profile strong,.navitem,.sticky em,.memo em,.note em{font-family:"Space Grotesk",sans-serif}.meta{font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--line)}.pill{height:38px;padding:0 12px;border-radius:999px;background:rgba(253,211,77,.18);font-size:.78rem;font-weight:700;text-transform:uppercase;color:var(--primary)}
+    .screen{position:absolute;inset:72px 0 92px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s ease,visibility .22s ease}.screen.active{opacity:1;visibility:visible;pointer-events:auto}
+    .start{overflow:hidden;background:linear-gradient(90deg,rgba(120,145,136,.64),rgba(223,236,223,.24) 18%,transparent 18%,transparent 82%,rgba(223,236,223,.24) 82%,rgba(120,145,136,.64)),linear-gradient(180deg,rgba(244,236,216,.1),rgba(215,227,211,.55))}.start:before,.start:after{content:"";position:absolute;border-radius:50%;filter:blur(20px);opacity:.55;pointer-events:none}.start:before{left:-80px;top:140px;width:320px;height:320px;background:radial-gradient(circle,rgba(112,181,255,.55),transparent 68%)}.start:after{right:-50px;bottom:40px;width:320px;height:320px;background:radial-gradient(circle,rgba(253,211,77,.4),transparent 68%)}
+    .startStage{height:100%;display:grid;place-items:center;padding:28px 28px 42px;position:relative}.monitor{width:min(78vw,680px);position:relative}.screenFrame{padding:14px;border-radius:18px;background:linear-gradient(145deg,#eee3cc,#f8efdf 60%,#dacdb1);box-shadow:var(--shadow);transform:rotate(-.6deg)}.screenInner{min-height:min(62vh,520px);padding:58px 48px 126px;border-radius:10px;overflow:hidden;position:relative;background:repeating-linear-gradient(180deg,rgba(255,255,255,.03) 0,rgba(255,255,255,.03) 2px,rgba(0,0,0,.05) 2px,rgba(0,0,0,.05) 4px),radial-gradient(circle at top center,rgba(253,211,77,.08),transparent 30%),var(--monitor)}.screenInner:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(125deg,rgba(255,255,255,.08),transparent 22%,transparent 78%,rgba(255,255,255,.04))}.screenInner h1{position:relative;z-index:1;margin:0;font:800 clamp(3rem,10vw,6.4rem)/.94 "Space Grotesk",sans-serif;letter-spacing:-.08em;text-align:center;text-transform:uppercase;color:var(--yellow)}.screenInner p{position:relative;z-index:1;margin:22px 0 0;font:500 .95rem/1.2 "Space Grotesk",sans-serif;letter-spacing:.18em;text-align:center;text-transform:uppercase;color:rgba(244,234,214,.5)}
+    .crt{position:relative;z-index:1;width:200px;height:118px;margin:44px auto 0;border-radius:16px;background:radial-gradient(circle at 20% 28%,rgba(255,255,255,.08),transparent 20%),linear-gradient(180deg,rgba(255,255,255,.08),transparent 18%),#1f1a0b;box-shadow:0 16px 20px rgba(0,0,0,.28),inset 0 0 0 2px rgba(255,255,255,.04)}.crt:before{content:"";position:absolute;inset:12px 18px 22px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,.04),transparent),linear-gradient(90deg,transparent 12%,rgba(255,255,255,.06) 12%,rgba(255,255,255,.06) 15%,transparent 15%),linear-gradient(180deg,rgba(112,181,255,.08),rgba(0,0,0,.35)),#474235}.crt:after{content:"";position:absolute;left:44px;right:44px;bottom:-16px;height:8px;border-radius:999px;background:rgba(0,0,0,.45);filter:blur(6px)}.crt span{position:absolute;bottom:30px;width:14px;border-radius:999px 999px 4px 4px;background:linear-gradient(180deg,rgba(253,211,77,.7),rgba(112,181,255,.18));opacity:.74}.crt span:nth-child(1){left:40px;height:22px}.crt span:nth-child(2){left:62px;height:36px}.crt span:nth-child(3){left:84px;height:28px}.crt span:nth-child(4){left:106px;height:48px}.crt span:nth-child(5){left:128px;height:34px}
+    .notes{position:absolute;left:50%;bottom:-30px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:18px}.startNote{position:relative;padding:28px 48px;background:var(--green);color:#12411d;box-shadow:0 24px 34px rgba(18,65,29,.2);transform:rotate(1.8deg)}.startNote:before{content:"";position:absolute;top:-10px;right:18px;width:22px;height:22px;background:rgba(255,234,210,.84);transform:rotate(45deg)}.startNote strong,.startNote span,.note b{display:block}.startNote strong{font:800 clamp(2rem,3.5vw,3rem)/1 "Space Grotesk",sans-serif;letter-spacing:-.06em;text-transform:uppercase}.startNote span{margin-top:8px;font:700 .76rem/1.2 "Space Grotesk",sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.7}.note{width:150px;min-height:108px;padding:14px;box-shadow:0 10px 18px rgba(51,46,35,.1)}.note em{display:block;margin-bottom:10px;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.7;font-style:normal}.note b{font-size:.96rem;line-height:1.18}.yellow{background:var(--yellow);color:var(--primary);transform:rotate(-7deg)}.blue{background:rgba(112,181,255,.24);color:var(--blue-deep);transform:rotate(4deg);backdrop-filter:blur(10px)}.notes .yellow,.notes .blue{display:inline-block}.notes{gap:18px}.notes .note:last-child{margin-left:168px}.notes .note:nth-child(2){margin-right:168px}
+    .photo,.todo{position:absolute;box-shadow:0 18px 30px rgba(51,46,35,.12)}.photo{left:max(6vw,50px);bottom:160px;width:118px;padding:10px 10px 22px;background:#fffdf7;transform:rotate(-4deg)}.photo img{width:100%;aspect-ratio:1/1;object-fit:contain;background:radial-gradient(circle at center,rgba(112,181,255,.18),transparent 60%),linear-gradient(180deg,rgba(17,14,5,.08),transparent 30%),rgba(20,17,6,.86);image-rendering:pixelated;padding:18px}.photo span{display:block;margin-top:10px;font:700 .62rem/1.2 "Space Grotesk",sans-serif;letter-spacing:.12em;text-align:center;text-transform:uppercase;color:var(--line)}.todo{left:28px;bottom:18px;width:108px;padding:12px;background:var(--yellow);color:var(--primary);font:700 .72rem/1.2 "Space Grotesk",sans-serif;text-transform:uppercase;transform:rotate(-6deg)}
+    .game{display:grid;grid-template-columns:240px 1fr;background:radial-gradient(circle at 20% 0%,rgba(255,255,255,.42),transparent 24%),linear-gradient(180deg,rgba(255,255,255,.08),transparent 24%),#edf1ef}.sidebar{padding:26px 18px 24px;background:linear-gradient(180deg,rgba(241,231,211,.98),rgba(245,236,220,.98));box-shadow:inset -1px 0 0 rgba(180,172,156,.18)}.profile{display:grid;gap:10px;margin-bottom:24px;padding:10px 6px 18px}.portrait{width:68px;height:68px;display:grid;place-items:center;background:radial-gradient(circle at center,rgba(112,181,255,.28),transparent 65%),linear-gradient(180deg,rgba(255,255,255,.6),rgba(223,211,188,.8));border-radius:18px;box-shadow:0 10px 18px rgba(51,46,35,.1)}.portrait img{width:42px;image-rendering:pixelated}.profile strong{font-size:1.1rem;font-weight:800;color:var(--primary)}.profile span{font-size:.96rem;color:var(--line)}.nav{display:grid;gap:10px}.navitem{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:0 18px 18px 0;color:var(--line);font-weight:600;text-align:left}.navitem i{width:16px;height:16px;border-radius:5px;background:currentColor;opacity:.28}.navitem.active{background:linear-gradient(135deg,#ffe48c,var(--yellow));color:var(--primary);box-shadow:inset 4px 0 0 rgba(112,89,0,.9)}.navitem.active i{opacity:1;background:var(--primary)}
+    .workspace{position:relative;overflow:auto;padding:26px 26px 34px;background:radial-gradient(circle at 1px 1px,rgba(125,118,104,.13) 1px,transparent 0),linear-gradient(180deg,rgba(255,255,255,.44),rgba(233,238,236,.92));background-size:6px 6px,100% 100%}.sticky,.memo,.thought,.polaroid{position:absolute;box-shadow:0 10px 18px rgba(51,46,35,.1)}.sticky{width:148px;min-height:132px;padding:16px;background:var(--yellow);color:var(--primary);transform:rotate(-3deg)}.sticky em,.memo em{display:block;margin-bottom:8px;font-size:.72rem;font-style:normal;letter-spacing:.1em;text-transform:uppercase;opacity:.75}.sticky b,.memo b{display:block;font-family:"Space Grotesk",sans-serif;font-size:1.02rem;line-height:1.16}.sticky:after{content:"";position:absolute;left:50%;bottom:8px;width:10px;height:10px;border-radius:999px;background:#a72828;transform:translateX(-50%)}.memo{top:92px;right:130px;width:170px;padding:16px 16px 18px;background:rgba(255,255,255,.88);color:var(--blue-deep);transform:rotate(-9deg)}.memo b{font-size:.82rem;color:var(--soft);line-height:1.28;font-family:inherit}
+    .hud{position:absolute;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:18px;z-index:2}.card{min-width:126px;padding:12px 18px;border-radius:16px;box-shadow:0 10px 18px rgba(51,46,35,.1)}.card.dark{background:#171107;color:var(--yellow)}.card.light{min-width:180px;background:rgba(255,245,228,.9);color:var(--primary)}.card span{display:block;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.72}.card strong{display:block;margin-top:4px;font:800 2.2rem/1 "Space Grotesk",sans-serif;letter-spacing:-.08em}.track{margin-top:14px;height:10px;border-radius:999px;background:rgba(112,89,0,.12);overflow:hidden}.track div{width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--green-deep),var(--green));transition:width .16s ease}.card p{margin:8px 0 0;font-size:.82rem;color:var(--line)}
+    .thought{top:28px;right:22px;width:280px;padding:18px 18px 20px;border-radius:22px;background:rgba(255,255,255,.82);backdrop-filter:blur(18px);color:var(--soft);transition:opacity .15s ease,transform .15s ease}.thought.hidden{opacity:0;transform:translateY(-8px);pointer-events:none}.thought:after{content:"";position:absolute;right:34px;bottom:-10px;width:18px;height:18px;background:rgba(255,255,255,.82);transform:rotate(45deg)}.thoughtHead{display:flex;align-items:center;gap:12px;margin-bottom:10px}.thoughtHead i{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(112,181,255,.18);color:var(--blue-deep);font-style:normal;font-family:"Space Grotesk",sans-serif;font-weight:800}.thoughtHead span{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-deep)}.thought p{margin:0;font-size:.96rem;line-height:1.45;font-style:italic}
+    .boardWrap{position:relative;display:grid;place-items:center;min-height:calc(100vh - 220px);padding:66px 24px 42px}.mat{position:absolute;inset:calc(50% - 336px) calc(50% - 426px);border-radius:26px;background:radial-gradient(circle at top left,rgba(255,255,255,.08),transparent 30%),linear-gradient(135deg,rgba(17,14,5,.08),transparent 30%),linear-gradient(180deg,#3c495e,#273346);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}.boardFrame{position:relative;padding:14px;border-radius:18px;background:linear-gradient(180deg,#ddd3bd,#f0e5cf 46%,#d8caae);box-shadow:0 20px 36px rgba(34,48,65,.18)}canvas{display:block;width:min(100%,800px);height:auto;border-radius:8px;image-rendering:pixelated}.hintBar{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:inline-flex;gap:14px;padding:10px 18px;border-radius:999px;background:rgba(255,245,228,.74);color:var(--line);box-shadow:0 10px 18px rgba(51,46,35,.1);backdrop-filter:blur(12px);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+    .polaroid{right:16px;bottom:24px;width:106px;padding:8px 8px 18px;background:#fffdf7;transform:rotate(8deg)}.polaroid img{width:100%;aspect-ratio:1/1;object-fit:contain;padding:12px;background:radial-gradient(circle at center,rgba(112,181,255,.18),transparent 60%),rgba(20,17,6,.86);image-rendering:pixelated}.polaroid span{display:block;margin-top:8px;font:700 .58rem/1.2 "Space Grotesk",sans-serif;letter-spacing:.12em;text-align:center;text-transform:uppercase;color:var(--line)}
+    .actions{position:fixed;left:0;right:0;bottom:0;z-index:25;display:flex;justify-content:center;gap:24px;padding:12px 18px 18px;background:rgba(255,245,228,.85);backdrop-filter:blur(18px);box-shadow:0 -1px 0 rgba(180,172,156,.18)}.action{min-width:124px;padding:14px 18px 12px;border-radius:14px;background:rgba(255,255,255,.48);color:var(--line);text-align:center}.action.primary{background:linear-gradient(135deg,#ffe48c,var(--yellow));color:var(--primary);box-shadow:0 10px 18px rgba(51,46,35,.1)}.action:disabled{opacity:.42;cursor:default}.action strong,.action span{display:block;text-transform:uppercase}.action strong{font-size:1rem;font-weight:700;letter-spacing:-.04em}.action span{margin-top:4px;font-size:.62rem;font-weight:700;letter-spacing:.16em;opacity:.72}
+    .win{position:fixed;inset:0;z-index:40;display:grid;place-items:center;padding:24px;background:rgba(20,17,6,.42);backdrop-filter:blur(8px);opacity:0;visibility:hidden;transition:opacity .18s ease,visibility .18s ease}.win.open{opacity:1;visibility:visible}.winCard{max-width:460px;padding:30px 28px 24px;background:linear-gradient(180deg,#fff4c8,#ffe391);color:var(--primary);box-shadow:0 26px 44px rgba(20,17,6,.26);transform:rotate(-1.5deg)}.winCard small{display:block;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.72}.winCard h2{margin:12px 0 0;font:800 clamp(2.3rem,5vw,3.3rem)/.96 "Space Grotesk",sans-serif;letter-spacing:-.08em;text-transform:uppercase}.winCard p{margin:14px 0 0;font-family:"Space Grotesk",sans-serif;font-size:1rem;line-height:1.45;color:rgba(92,73,0,.82)}.winRow{display:flex;gap:12px;margin-top:20px}.winBtn{padding:12px 18px;background:rgba(255,255,255,.72);color:var(--primary);font-size:.92rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;box-shadow:0 10px 18px rgba(51,46,35,.1)}.winBtn.yes{background:var(--green);color:#12411d}
+    @media (max-width:980px){.game{grid-template-columns:1fr}.sidebar,.sticky,.memo,.thought,.polaroid{display:none}.workspace{padding:18px 16px 34px}.hud{position:static;transform:none;justify-content:center;margin-bottom:18px}.boardWrap{padding-top:12px}.mat{display:none}}@media (max-width:720px){.app{padding-bottom:112px}.topbar{padding:14px 16px}.brand{font-size:1.45rem}.rule,.meta,.photo,.todo{display:none}.screen{inset:66px 0 104px}.monitor{width:min(92vw,680px)}.screenInner{min-height:420px;padding:42px 24px 100px}.notes{width:calc(100% - 24px)}.startNote{width:100%;text-align:center}.notes .note:nth-child(2),.notes .note:last-child{margin:0}.hintBar{width:calc(100% - 28px);justify-content:center;flex-wrap:wrap;border-radius:18px}.actions{gap:12px;padding-left:10px;padding-right:10px}.action{min-width:0;flex:1;padding-left:10px;padding-right:10px}.action strong{font-size:.86rem}.boardFrame{padding:10px}}
   </style>
 </head>
 <body>
-  <canvas id="gameCanvas"></canvas>
+  <div class="app">
+    <header class="topbar">
+      <div class="brandwrap">
+        <div class="brand">Vitya's Life</div>
+        <div class="rule"></div>
+        <div class="meta">Level: 1-4</div>
+      </div>
+      <div class="tools">
+        <button class="pill" id="helpBtn" type="button">Help</button>
+        <button class="pill" id="soundBtn" type="button">Sound</button>
+      </div>
+    </header>
+
+    <section class="screen start active" id="startScreen">
+      <div class="startStage">
+        <div class="monitor">
+          <div class="screenFrame">
+            <div class="screenInner">
+              <h1>Vitya's<br />Life</h1>
+              <p>Employee ID: #802 - Active Session</p>
+              <div class="crt">
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+          <div class="notes">
+            <button class="startNote" id="startBtn" type="button">
+              <strong>Start Game</strong>
+              <span>Press Enter or click to clock in</span>
+            </button>
+            <div class="note yellow"><em>Todo</em><b>Push each folder onto a glowing tray.</b></div>
+            <div class="note blue"><em>Controls</em><b>Arrow keys move. Z undo. R reset.</b></div>
+          </div>
+        </div>
+        <div class="photo">
+          <img src="assets/images/player/player_right.png" alt="" />
+          <span>Employee Portrait</span>
+        </div>
+        <div class="todo">Lunch is not approved yet.</div>
+      </div>
+    </section>
+
+    <section class="screen game" id="gameScreen">
+      <aside class="sidebar">
+        <div class="profile">
+          <div class="portrait"><img src="assets/images/player/player_down.png" alt="Vitya portrait" /></div>
+          <strong>Employee #802</strong>
+          <span>Vitya's Desk</span>
+        </div>
+        <nav class="nav">
+          <button class="navitem active" type="button"><i></i><span>Desktop</span></button>
+          <button class="navitem" type="button"><i></i><span>Tasks</span></button>
+          <button class="navitem" type="button"><i></i><span>Archives</span></button>
+          <button class="navitem" type="button"><i></i><span>Break Room</span></button>
+        </nav>
+      </aside>
+
+      <main class="workspace">
+        <div class="sticky" style="top:18px;left:20px;"><em>Project</em><b>Efficiency first. Do not lose the AUTH crates.</b></div>
+        <div class="memo"><em>Memo 48-A</em><b>Rearrange internal documentation before end of business.</b></div>
+
+        <div class="hud">
+          <div class="card dark"><span>Moves</span><strong id="movesValue">0</strong></div>
+          <div class="card light"><span>Efficiency</span><div class="track"><div id="efficiencyFill"></div></div><p id="efficiencyMeta">0 / 6 tasks filed</p></div>
+        </div>
+
+        <div class="thought" id="thought">
+          <div class="thoughtHead"><i>i</i><span>Internal Monologue</span></div>
+          <p id="thoughtCopy">"If I finish these boxes before 5, maybe I can go home with my dignity intact."</p>
+        </div>
+
+        <div class="boardWrap">
+          <div class="mat"></div>
+          <div class="boardFrame"><canvas id="gameCanvas" width="800" height="600"></canvas></div>
+          <div class="hintBar"><span>Arrow keys move</span><span>Z undo</span><span>R reset</span></div>
+        </div>
+
+        <div class="polaroid">
+          <img src="assets/images/box.png" alt="" />
+          <span>Archived task</span>
+        </div>
+      </main>
+    </section>
+
+    <nav class="actions">
+      <button class="action" id="undoBtn" type="button" disabled><strong>Undo</strong><span>Step back</span></button>
+      <button class="action primary" id="resetBtn" type="button" disabled><strong>Reset</strong><span>Same shift</span></button>
+      <button class="action" id="hintBtn" type="button" disabled><strong>Hints</strong><span>Office thoughts</span></button>
+    </nav>
+  </div>
+
+  <div class="win" id="win">
+    <div class="winCard">
+      <small>Quarterly review</small>
+      <h2>You are a loser!</h2>
+      <p>All folders are in the correct trays. Somehow that still counts as success here.</p>
+      <div class="winRow">
+        <button class="winBtn yes" id="newShiftBtn" type="button">New shift</button>
+        <button class="winBtn" id="replayBtn" type="button">Replay board</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    const TILE_SIZE = 40;
-    const WIDTH = 800;
-    const HEIGHT = 600;
-
-    const BLACK = "#000000";
-    const WHITE = "#ffffff";
-    const BLUE  = "#4169E1";
-
-    const canvas = document.getElementById("gameCanvas");
-    canvas.width  = WIDTH;
-    canvas.height = HEIGHT;
-    const ctx = canvas.getContext("2d");
-
-    // ── Audio ────────────────────────────────────────────────────────────────
-    const bgMusic = new Audio("assets/sounds/background.mp3");
-    bgMusic.loop = true;
-    // Browsers require a user gesture before playing audio; start on first
-    // keydown or click.
-    let audioStarted = false;
-    function startAudio() {
-      if (!audioStarted) {
-        bgMusic.play().catch(() => {});
-        audioStarted = true;
-      }
-    }
-    document.addEventListener("keydown", startAudio);
-    document.addEventListener("click",   startAudio);
-
-    // ── Image cache ──────────────────────────────────────────────────────────
-    const images = {};
-    let imagesLoaded = 0;
-    const imageFiles = {
-      box:          "assets/images/box.png",
-      player_down:  "assets/images/player/player_down.png",
-      player_up:    "assets/images/player/player_up.png",
-      player_left:  "assets/images/player/player_left.png",
-      player_right: "assets/images/player/player_right.png",
-    };
-    const totalImages = Object.keys(imageFiles).length;
-
-    function loadImages(callback) {
-      for (const [key, src] of Object.entries(imageFiles)) {
-        const img = new Image();
-        img.src = src;
-        img.onload = () => {
-          imagesLoaded++;
-          if (imagesLoaded === totalImages) callback();
-        };
-        img.onerror = () => {
-          console.error(`Failed to load image: ${src}`);
-          imagesLoaded++;
-          if (imagesLoaded === totalImages) callback();
-        };
-        images[key] = img;
-      }
-    }
-
-    // ── Game class ───────────────────────────────────────────────────────────
-    class Game {
-      constructor() {
-        this.level = [
+    const TILE=40,WIDTH=800,HEIGHT=600;
+    const COLORS={surface:"#fff5e4",wall:"#efe6d1",wallShadow:"#d1c4a8",wallLight:"rgba(255,255,255,.45)",floorA:"#2f3b4c",floorB:"#364357",floorDot:"rgba(255,255,255,.08)",target:"#91f78e",targetDeep:"#006b1b",targetGlow:"rgba(145,247,142,.32)",text:"#332e23",halo:"rgba(253,211,77,.28)",shadow:"rgba(17,14,5,.32)",veil:"rgba(20,17,6,.08)"};
+    const canvas=document.getElementById("gameCanvas"),ctx=canvas.getContext("2d");
+    const startScreen=document.getElementById("startScreen"),gameScreen=document.getElementById("gameScreen");
+    const startBtn=document.getElementById("startBtn"),undoBtn=document.getElementById("undoBtn"),resetBtn=document.getElementById("resetBtn"),hintBtn=document.getElementById("hintBtn");
+    const helpBtn=document.getElementById("helpBtn"),soundBtn=document.getElementById("soundBtn");
+    const thought=document.getElementById("thought"),thoughtCopy=document.getElementById("thoughtCopy"),movesValue=document.getElementById("movesValue"),efficiencyFill=document.getElementById("efficiencyFill"),efficiencyMeta=document.getElementById("efficiencyMeta");
+    const win=document.getElementById("win"),replayBtn=document.getElementById("replayBtn"),newShiftBtn=document.getElementById("newShiftBtn");
+    const tips=[
+      "\"Push the folders from the open side. Cubicle walls do not negotiate.\"",
+      "\"Finished boxes glow green. That is the closest thing this company has to praise.\"",
+      "\"Corners are the enemy. Plan the route before you improvise.\""
+    ];
+    const bgMusic=new Audio("assets/sounds/background.mp3");bgMusic.loop=true;
+    const images={},imageFiles={box:"assets/images/box.png",player_down:"assets/images/player/player_down.png",player_up:"assets/images/player/player_up.png",player_left:"assets/images/player/player_left.png",player_right:"assets/images/player/player_right.png"};
+    let loaded=0,ready=false,pendingStart=false,audioStarted=false,soundOn=true,loop=0,hintsOn=true,game=null;
+    function cloneBoxes(boxes){return boxes.map((box)=>({name:box.name,coords:{x:box.coords.x,y:box.coords.y}}));}
+    function startAudio(){if(!soundOn||audioStarted)return;bgMusic.play().then(()=>{audioStarted=true;}).catch(()=>{});}
+    function stopAudio(){bgMusic.pause();audioStarted=false;}
+    function loadImages(done){for(const [key,src] of Object.entries(imageFiles)){const img=new Image();img.src=src;img.onload=img.onerror=()=>{loaded+=1;if(loaded===Object.keys(imageFiles).length){ready=true;done();}};images[key]=img;}}
+    function setScreen(name){const start=name==="start";startScreen.classList.toggle("active",start);gameScreen.classList.toggle("active",!start);const active=!start&&!!game;resetBtn.disabled=!active;hintBtn.disabled=!active;undoBtn.disabled=!active||game.history.length===0;}
+    function updateTip(seed){thoughtCopy.textContent=tips[seed%tips.length];}
+    function updateHud(){if(!game){movesValue.textContent="0";efficiencyFill.style.width="0%";efficiencyMeta.textContent="0 / 6 tasks filed";return;}const done=game.doneCount(),total=game.targets.length,pct=Math.round(done/total*100);movesValue.textContent=String(game.moves);efficiencyFill.style.width=pct+"%";efficiencyMeta.textContent=done+" / "+total+" tasks filed";undoBtn.disabled=!gameScreen.classList.contains("active")||game.history.length===0;resetBtn.disabled=!gameScreen.classList.contains("active");hintBtn.disabled=!gameScreen.classList.contains("active");}
+    function showWin(){win.classList.add("open");}
+    function hideWin(){win.classList.remove("open");}
+    class Game{
+      constructor(){
+        this.level=[
           "####################",
           "#                  #",
           "#                  #",
@@ -98,176 +175,76 @@
           "#        ##        #",
           "#                  #",
           "#                  #",
-          "####################",
+          "####################"
         ];
-
-        const names = ["AUTH", "SCHED", "DOC", "FEE", "NOTI", "SD"];
-        this.boxes   = [];
-        this.targets = [];
-        this.playerDirection = "down";
-        this.generatePositions(names);
-        this.playerPos = { x: 1, y: 1 };
-        this.running = true;
-        this.won = false;
-        this.winTime = null;
+        const names=["AUTH","SCHED","DOC","FEE","NOTI","SD"];
+        this.boxes=[];this.targets=[];this.playerDirection="down";this.playerPos={x:1,y:1};this.moves=0;this.won=false;this.history=[];
+        this.place(names);this.initial=this.snap();
       }
-
-      _randomFreePos(exclude) {
-        const rows = this.level.length;
-        const cols = this.level[0].length;
-        while (true) {
-          const x = Math.floor(Math.random() * (cols - 4)) + 2;
-          const y = Math.floor(Math.random() * (rows - 4)) + 2;
-          if (this.level[y][x] === "#") continue;
-          if (exclude.some(p => p.x === x && p.y === y)) continue;
-          return { x, y };
-        }
+      snap(){return{playerPos:{x:this.playerPos.x,y:this.playerPos.y},playerDirection:this.playerDirection,boxes:cloneBoxes(this.boxes),moves:this.moves};}
+      restore(state){this.playerPos={x:state.playerPos.x,y:state.playerPos.y};this.playerDirection=state.playerDirection;this.boxes=cloneBoxes(state.boxes);this.moves=state.moves;this.won=false;}
+      reset(){this.history=[];this.restore(this.initial);}
+      undo(){const prev=this.history.pop();if(prev)this.restore(prev);}
+      freePos(used){const rows=this.level.length,cols=this.level[0].length;while(true){const x=Math.floor(Math.random()*(cols-4))+2,y=Math.floor(Math.random()*(rows-4))+2;if(this.level[y][x]==="#")continue;if(used.some((p)=>p.x===x&&p.y===y))continue;return{x,y};}}
+      place(names){const used=[{x:this.playerPos.x,y:this.playerPos.y}];for(const name of names){const boxPos=this.freePos(used);used.push(boxPos);this.boxes.push({coords:boxPos,name});const targetPos=this.freePos(used);used.push(targetPos);this.targets.push(targetPos);}}
+      isWall(pos){return this.level[pos.y]?.[pos.x]==="#";}
+      onTarget(pos){return this.targets.some((t)=>t.x===pos.x&&t.y===pos.y);}
+      doneCount(){return this.boxes.filter((box)=>this.onTarget(box.coords)).length;}
+      move(dx,dy){
+        if(this.won)return;
+        if(dx>0)this.playerDirection="right";if(dx<0)this.playerDirection="left";if(dy>0)this.playerDirection="down";if(dy<0)this.playerDirection="up";
+        const nx=this.playerPos.x+dx,ny=this.playerPos.y+dy,next={x:nx,y:ny};if(this.isWall(next))return;
+        const box=this.boxes.find((b)=>b.coords.x===nx&&b.coords.y===ny),state=this.snap();
+        if(box){const boxNext={x:nx+dx,y:ny+dy};if(this.isWall(boxNext))return;if(this.boxes.some((b)=>b.coords.x===boxNext.x&&b.coords.y===boxNext.y))return;box.coords=boxNext;}
+        this.history.push(state);this.playerPos=next;this.moves+=1;
       }
-
-      generatePositions(names) {
-        const occupied = [];
-        for (const name of names) {
-          const boxPos = this._randomFreePos(occupied);
-          occupied.push(boxPos);
-          this.boxes.push({ coords: boxPos, name });
-
-          const targetPos = this._randomFreePos(occupied);
-          occupied.push(targetPos);
-          this.targets.push(targetPos);
-        }
+      checkWin(){return this.boxes.every((box)=>this.onTarget(box.coords));}
+      drawBase(){
+        ctx.clearRect(0,0,WIDTH,HEIGHT);
+        for(let y=0;y<this.level.length;y+=1){for(let x=0;x<this.level[y].length;x+=1){const px=x*TILE,py=y*TILE;
+          if(this.level[y][x]==="#"){ctx.fillStyle=COLORS.wall;ctx.fillRect(px,py,TILE,TILE);ctx.fillStyle=COLORS.wallLight;ctx.fillRect(px+4,py+4,TILE-8,3);ctx.fillRect(px+4,py+4,3,TILE-8);ctx.fillStyle=COLORS.wallShadow;ctx.fillRect(px,py+TILE-6,TILE,6);ctx.fillRect(px+TILE-6,py,6,TILE);}
+          else{ctx.fillStyle=(x+y)%2===0?COLORS.floorA:COLORS.floorB;ctx.fillRect(px,py,TILE,TILE);ctx.fillStyle=COLORS.floorDot;ctx.fillRect(px+9,py+9,3,3);ctx.fillRect(px+25,py+23,2,2);}
+        }}
+        ctx.fillStyle=COLORS.veil;ctx.fillRect(0,0,WIDTH,HEIGHT);
       }
-
-      drawLevel() {
-        for (let y = 0; y < this.level.length; y++) {
-          for (let x = 0; x < this.level[y].length; x++) {
-            ctx.fillStyle = this.level[y][x] === "#" ? BLACK : WHITE;
-            ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-          }
-        }
-      }
-
-      drawBoxes() {
-        for (const box of this.boxes) {
-          const { x, y } = box.coords;
-          ctx.drawImage(images.box, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-
-          // Label
-          ctx.fillStyle = BLACK;
-          ctx.font = "bold 11px sans-serif";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillText(box.name, x * TILE_SIZE + TILE_SIZE / 2, y * TILE_SIZE + TILE_SIZE / 2);
-        }
-      }
-
-      drawPlayer() {
-        const { x, y } = this.playerPos;
-        const img = images[`player_${this.playerDirection}`];
-        ctx.drawImage(img, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-      }
-
-      drawTargets() {
-        ctx.strokeStyle = BLUE;
-        ctx.lineWidth = 2;
-        for (const { x, y } of this.targets) {
-          ctx.strokeRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        }
-      }
-
-      movePlayer(dx, dy) {
-        if (this.won) return;
-
-        if      (dx > 0) this.playerDirection = "right";
-        else if (dx < 0) this.playerDirection = "left";
-        else if (dy > 0) this.playerDirection = "down";
-        else if (dy < 0) this.playerDirection = "up";
-
-        const px = this.playerPos.x;
-        const py = this.playerPos.y;
-        const nx = px + dx;
-        const ny = py + dy;
-        const newPos = { x: nx, y: ny };
-
-        if (this.isWall(newPos)) return;
-
-        const box = this.boxes.find(b => b.coords.x === nx && b.coords.y === ny);
-        if (box) {
-          const nbx = nx + dx;
-          const nby = ny + dy;
-          const newBoxPos = { x: nbx, y: nby };
-          if (this.isWall(newBoxPos)) return;
-          if (this.boxes.some(b => b.coords.x === nbx && b.coords.y === nby)) return;
-          box.coords = newBoxPos;
-        }
-
-        this.playerPos = newPos;
-      }
-
-      isWall({ x, y }) {
-        return this.level[y]?.[x] === "#";
-      }
-
-      checkWin() {
-        return this.boxes.every(box =>
-          this.targets.some(t => t.x === box.coords.x && t.y === box.coords.y)
-        );
-      }
-
-      draw() {
-        ctx.fillStyle = WHITE;
-        ctx.fillRect(0, 0, WIDTH, HEIGHT);
-
-        this.drawLevel();
-        this.drawTargets();
-        this.drawBoxes();
-        this.drawPlayer();
-
-        if (this.won) {
-          ctx.fillStyle = "rgba(255,255,255,0.8)";
-          ctx.fillRect(0, 0, WIDTH, HEIGHT);
-          ctx.fillStyle = BLACK;
-          ctx.font = "bold 72px sans-serif";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillText("You are a loser!", WIDTH / 2, HEIGHT / 2);
-        }
-      }
+      drawTargets(){for(const t of this.targets){const px=t.x*TILE,py=t.y*TILE;ctx.fillStyle=COLORS.targetGlow;ctx.fillRect(px+2,py+2,TILE-4,TILE-4);ctx.strokeStyle=COLORS.target;ctx.lineWidth=2;ctx.strokeRect(px+4,py+4,TILE-8,TILE-8);ctx.fillStyle="rgba(145,247,142,.24)";ctx.beginPath();ctx.arc(px+TILE/2,py+TILE/2,5,0,Math.PI*2);ctx.fill();}}
+      drawBoxes(){for(const box of this.boxes){const{x,y}=box.coords,px=x*TILE,py=y*TILE,on=this.onTarget(box.coords);ctx.fillStyle=COLORS.shadow;ctx.beginPath();ctx.ellipse(px+TILE/2,py+TILE-3,14,6,0,0,Math.PI*2);ctx.fill();if(on){ctx.fillStyle="rgba(0,107,27,.32)";ctx.fillRect(px+5,py+5,TILE-10,TILE-10);}ctx.drawImage(images.box,px+4,py+4,TILE-8,TILE-8);if(on){ctx.strokeStyle=COLORS.target;ctx.lineWidth=2;ctx.strokeRect(px+5,py+5,TILE-10,TILE-10);}ctx.fillStyle=on?"#edf9ea":COLORS.text;ctx.font="700 10px 'Space Grotesk', sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(box.name,px+TILE/2,py+TILE/2);}}
+      drawPlayer(){const px=this.playerPos.x*TILE,py=this.playerPos.y*TILE,sprite=images["player_"+this.playerDirection];ctx.fillStyle=COLORS.halo;ctx.beginPath();ctx.arc(px+TILE/2,py+TILE/2,14,0,Math.PI*2);ctx.fill();ctx.fillStyle=COLORS.shadow;ctx.beginPath();ctx.ellipse(px+TILE/2,py+TILE-3,14,6,0,0,Math.PI*2);ctx.fill();ctx.drawImage(sprite,px+2,py+2,TILE-4,TILE-4);}
+      draw(){this.drawBase();this.drawTargets();this.drawBoxes();this.drawPlayer();}
     }
-
-    // ── Main loop ────────────────────────────────────────────────────────────
-    let game;
-
-    function gameLoop() {
-      game.draw();
-
-      if (!game.won && game.checkWin()) {
-        game.won = true;
-        game.winTime = performance.now();
+    function render(){if(!game)return;game.draw();updateHud();if(!game.won&&game.checkWin()){game.won=true;showWin();return;}loop=requestAnimationFrame(render);}
+    function restartLoop(){if(loop)cancelAnimationFrame(loop);loop=requestAnimationFrame(render);}
+    function newGame(){game=new Game();hideWin();updateTip(game.moves);updateHud();restartLoop();}
+    function replayBoard(){if(!game)return;game.reset();hideWin();updateTip(game.moves);updateHud();restartLoop();}
+    function beginGame(){startAudio();if(!ready){pendingStart=true;startBtn.querySelector("span").textContent="Loading paperwork...";return;}setScreen("game");newGame();}
+    function toggleHints(){hintsOn=!hintsOn;thought.classList.toggle("hidden",!hintsOn);}
+    function about(){window.alert("Push every labeled crate onto a glowing tray.\nArrow keys move. Z undoes the last move. R resets the current board.");}
+    startBtn.addEventListener("click",beginGame);
+    helpBtn.addEventListener("click",about);
+    soundBtn.addEventListener("click",()=>{soundOn=!soundOn;soundBtn.textContent=soundOn?"Sound":"Muted";if(soundOn)startAudio();else stopAudio();});
+    undoBtn.addEventListener("click",()=>{if(!game)return;game.undo();hideWin();updateTip(game.moves);updateHud();restartLoop();});
+    resetBtn.addEventListener("click",replayBoard);
+    hintBtn.addEventListener("click",toggleHints);
+    replayBtn.addEventListener("click",replayBoard);
+    newShiftBtn.addEventListener("click",newGame);
+    document.addEventListener("click",()=>{if(gameScreen.classList.contains("active"))startAudio();});
+    document.addEventListener("keydown",(event)=>{
+      const onStart=startScreen.classList.contains("active");
+      if(onStart){if(event.key==="Enter"||event.key===" "||event.key.startsWith("Arrow")){event.preventDefault();beginGame();}return;}
+      if(!game)return;
+      if(event.key==="z"||event.key==="Z"){event.preventDefault();game.undo();hideWin();updateTip(game.moves);updateHud();restartLoop();return;}
+      if(event.key==="r"||event.key==="R"){event.preventDefault();replayBoard();return;}
+      if(event.key==="h"||event.key==="H"){event.preventDefault();toggleHints();return;}
+      switch(event.key){
+        case"ArrowLeft":event.preventDefault();game.move(-1,0);break;
+        case"ArrowRight":event.preventDefault();game.move(1,0);break;
+        case"ArrowUp":event.preventDefault();game.move(0,-1);break;
+        case"ArrowDown":event.preventDefault();game.move(0,1);break;
+        default:return;
       }
-
-      if (game.won && performance.now() - game.winTime > 2000) {
-        game.running = false;
-      }
-
-      if (game.running) {
-        requestAnimationFrame(gameLoop);
-      }
-    }
-
-    document.addEventListener("keydown", (e) => {
-      if (!game || !game.running) return;
-      switch (e.key) {
-        case "ArrowLeft":  e.preventDefault(); game.movePlayer(-1,  0); break;
-        case "ArrowRight": e.preventDefault(); game.movePlayer( 1,  0); break;
-        case "ArrowUp":    e.preventDefault(); game.movePlayer( 0, -1); break;
-        case "ArrowDown":  e.preventDefault(); game.movePlayer( 0,  1); break;
-      }
+      updateTip(game.moves);updateHud();restartLoop();
     });
-
-    loadImages(() => {
-      game = new Game();
-      requestAnimationFrame(gameLoop);
-    });
+    loadImages(()=>{if(pendingStart)beginGame();else{ctx.fillStyle=COLORS.surface;ctx.fillRect(0,0,WIDTH,HEIGHT);}});
   </script>
 </body>
 </html>

@@ -32,8 +32,7 @@ jobs:
               - 'nginx.conf'
               - 'docker-compose.yml'
               - '.dockerignore'
-              - 'main.py'
-              - 'requirements.txt'
+              - 'README.md'
               - '.github/workflows/build.yml'
 
   test-app:
@@ -45,14 +44,12 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
       - name: Validate repository files
         run: |
-          python -m py_compile main.py
           test -f index.html
+          test -f Dockerfile
+          test -f docker-compose.yml
+          test -f nginx.conf
           test -f assets/images/box.png
           test -f assets/sounds/background.mp3
 
