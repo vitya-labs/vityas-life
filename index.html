@@ -10,8 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet" />
   <style>
     :root{--surface:#fff5e4;--low:#faf0dd;--panel:#f1e7d3;--high:#e7dcc5;--dim:#ded3bc;--ink:#332e23;--soft:#615b4e;--line:#7d7668;--primary:#705900;--yellow:#fdd34d;--green:#91f78e;--green-deep:#006b1b;--blue:#70b5ff;--blue-deep:#005e9f;--monitor:#141106;--floor-a:#2f3b4c;--floor-b:#364357;--shadow:0 20px 40px rgba(51,46,35,.14)}
-    *{box-sizing:border-box}html,body{margin:0;min-height:100%;overflow:hidden;font-family:"Be Vietnam Pro",sans-serif;color:var(--ink);background:radial-gradient(circle at top left,rgba(255,255,255,.75),transparent 35%),linear-gradient(180deg,#fff7ea,#f4ead7)}body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:radial-gradient(circle at 1px 1px,rgba(51,46,35,.18) 1px,transparent 0);background-size:9px 9px}button{border:0;background:none;color:inherit;font:inherit;cursor:pointer}img{display:block;max-width:100%}
-    .app{min-height:100vh;padding:72px 0 92px;position:relative}.topbar{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px 22px;background:rgba(255,245,228,.92);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(180,172,156,.18)}.brandwrap,.tools{display:flex;align-items:center;gap:14px}.brand{display:flex;align-items:center;gap:12px;font:800 1.85rem/1 "Space Grotesk",sans-serif;letter-spacing:-.06em;text-transform:uppercase;color:var(--primary)}.brandIcon{width:28px;height:28px;image-rendering:pixelated;filter:drop-shadow(0 5px 10px rgba(51,46,35,.16));flex:none}.rule{width:36px;height:2px;border-radius:99px;background:var(--dim)}.meta,.pill,.hintBar,.action strong,.action span,.winCard small,.winBtn,.thoughtHead span,.card span,.profile strong,.navitem,.sticky em,.memo em,.note em{font-family:"Space Grotesk",sans-serif}.meta{font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--line)}.pill{height:38px;padding:0 12px;border-radius:999px;background:rgba(253,211,77,.18);font-size:.78rem;font-weight:700;text-transform:uppercase;color:var(--primary)}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;overflow:hidden;font-family:"Be Vietnam Pro",sans-serif;color:var(--ink);background:radial-gradient(circle at top left,rgba(255,255,255,.75),transparent 35%),linear-gradient(180deg,#fff7ea,#f4ead7);overscroll-behavior:none}body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:radial-gradient(circle at 1px 1px,rgba(51,46,35,.18) 1px,transparent 0);background-size:9px 9px}button{border:0;background:none;color:inherit;font:inherit;cursor:pointer;touch-action:manipulation}img{display:block;max-width:100%}
+    .app{min-height:100vh;min-height:100dvh;padding:72px 0 92px;position:relative}.topbar{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px 22px;background:rgba(255,245,228,.92);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(180,172,156,.18)}.brandwrap,.tools{display:flex;align-items:center;gap:14px}.brand{display:flex;align-items:center;gap:12px;font:800 1.85rem/1 "Space Grotesk",sans-serif;letter-spacing:-.06em;text-transform:uppercase;color:var(--primary)}.brandIcon{width:28px;height:28px;image-rendering:pixelated;filter:drop-shadow(0 5px 10px rgba(51,46,35,.16));flex:none}.rule{width:36px;height:2px;border-radius:99px;background:var(--dim)}.meta,.pill,.hintBar,.action strong,.action span,.winCard small,.winBtn,.thoughtHead span,.card span,.profile strong,.navitem,.sticky em,.memo em,.note em,.controlPad button,.touchHint{font-family:"Space Grotesk",sans-serif}.meta{font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--line)}.pill{height:38px;padding:0 12px;border-radius:999px;background:rgba(253,211,77,.18);font-size:.78rem;font-weight:700;text-transform:uppercase;color:var(--primary)}
     .screen{position:absolute;inset:72px 0 92px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s ease,visibility .22s ease}.screen.active{opacity:1;visibility:visible;pointer-events:auto}
     .start{overflow:hidden;background:linear-gradient(90deg,rgba(120,145,136,.64),rgba(223,236,223,.24) 18%,transparent 18%,transparent 82%,rgba(223,236,223,.24) 82%,rgba(120,145,136,.64)),linear-gradient(180deg,rgba(244,236,216,.1),rgba(215,227,211,.55))}.start:before,.start:after{content:"";position:absolute;border-radius:50%;filter:blur(20px);opacity:.55;pointer-events:none}.start:before{left:-80px;top:140px;width:320px;height:320px;background:radial-gradient(circle,rgba(112,181,255,.55),transparent 68%)}.start:after{right:-50px;bottom:40px;width:320px;height:320px;background:radial-gradient(circle,rgba(253,211,77,.4),transparent 68%)}
     .startStage{height:100%;display:grid;place-items:center;padding:28px 28px 42px;position:relative}.monitor{width:min(78vw,680px);position:relative}.screenFrame{padding:14px;border-radius:18px;background:linear-gradient(145deg,#eee3cc,#f8efdf 60%,#dacdb1);box-shadow:var(--shadow);transform:rotate(-.6deg)}.screenInner{min-height:min(62vh,520px);padding:58px 48px 126px;border-radius:10px;overflow:hidden;position:relative;background:repeating-linear-gradient(180deg,rgba(255,255,255,.03) 0,rgba(255,255,255,.03) 2px,rgba(0,0,0,.05) 2px,rgba(0,0,0,.05) 4px),radial-gradient(circle at top center,rgba(253,211,77,.08),transparent 30%),var(--monitor)}.screenInner:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(125deg,rgba(255,255,255,.08),transparent 22%,transparent 78%,rgba(255,255,255,.04))}.screenInner h1{position:relative;z-index:1;margin:0;font:800 clamp(3rem,10vw,6.4rem)/.94 "Space Grotesk",sans-serif;letter-spacing:-.08em;text-align:center;text-transform:uppercase;color:var(--yellow)}.screenInner p{position:relative;z-index:1;margin:22px 0 0;font:500 .95rem/1.2 "Space Grotesk",sans-serif;letter-spacing:.18em;text-align:center;text-transform:uppercase;color:rgba(244,234,214,.5)}
@@ -22,11 +22,12 @@
     .workspace{position:relative;overflow:auto;padding:26px 26px 34px;background:radial-gradient(circle at 1px 1px,rgba(125,118,104,.13) 1px,transparent 0),linear-gradient(180deg,rgba(255,255,255,.44),rgba(233,238,236,.92));background-size:6px 6px,100% 100%}.sticky,.memo,.thought,.polaroid{position:absolute;box-shadow:0 10px 18px rgba(51,46,35,.1)}.sticky{width:148px;min-height:132px;padding:16px;background:var(--yellow);color:var(--primary);transform:rotate(-3deg)}.sticky em,.memo em{display:block;margin-bottom:8px;font-size:.72rem;font-style:normal;letter-spacing:.1em;text-transform:uppercase;opacity:.75}.sticky b,.memo b{display:block;font-family:"Space Grotesk",sans-serif;font-size:1.02rem;line-height:1.16}.sticky:after{content:"";position:absolute;left:50%;bottom:8px;width:10px;height:10px;border-radius:999px;background:#a72828;transform:translateX(-50%)}.memo{top:92px;right:130px;width:170px;padding:16px 16px 18px;background:rgba(255,255,255,.88);color:var(--blue-deep);transform:rotate(-9deg)}.memo b{font-size:.82rem;color:var(--soft);line-height:1.28;font-family:inherit}
     .hud{position:absolute;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:18px;z-index:2}.card{min-width:126px;padding:12px 18px;border-radius:16px;box-shadow:0 10px 18px rgba(51,46,35,.1)}.card.dark{background:#171107;color:var(--yellow)}.card.light{min-width:180px;background:rgba(255,245,228,.9);color:var(--primary)}.card span{display:block;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.72}.card strong{display:block;margin-top:4px;font:800 2.2rem/1 "Space Grotesk",sans-serif;letter-spacing:-.08em}.track{margin-top:14px;height:10px;border-radius:999px;background:rgba(112,89,0,.12);overflow:hidden}.track div{width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--green-deep),var(--green));transition:width .16s ease}.card p{margin:8px 0 0;font-size:.82rem;color:var(--line)}
     .thought{top:28px;right:22px;width:280px;padding:18px 18px 20px;border-radius:22px;background:rgba(255,255,255,.82);backdrop-filter:blur(18px);color:var(--soft);transition:opacity .15s ease,transform .15s ease}.thought.hidden{opacity:0;transform:translateY(-8px);pointer-events:none}.thought:after{content:"";position:absolute;right:34px;bottom:-10px;width:18px;height:18px;background:rgba(255,255,255,.82);transform:rotate(45deg)}.thoughtHead{display:flex;align-items:center;gap:12px;margin-bottom:10px}.thoughtHead i{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(112,181,255,.18);color:var(--blue-deep);font-style:normal;font-family:"Space Grotesk",sans-serif;font-weight:800}.thoughtHead span{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-deep)}.thought p{margin:0;font-size:.96rem;line-height:1.45;font-style:italic}
-    .boardWrap{position:relative;display:grid;place-items:center;min-height:calc(100vh - 220px);padding:66px 24px 42px}.mat{position:absolute;inset:calc(50% - 336px) calc(50% - 426px);border-radius:26px;background:radial-gradient(circle at top left,rgba(255,255,255,.08),transparent 30%),linear-gradient(135deg,rgba(17,14,5,.08),transparent 30%),linear-gradient(180deg,#3c495e,#273346);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}.boardFrame{position:relative;padding:14px;border-radius:18px;background:linear-gradient(180deg,#ddd3bd,#f0e5cf 46%,#d8caae);box-shadow:0 20px 36px rgba(34,48,65,.18)}canvas{display:block;width:min(100%,800px);height:auto;border-radius:8px;image-rendering:pixelated}.hintBar{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:inline-flex;gap:14px;padding:10px 18px;border-radius:999px;background:rgba(255,245,228,.74);color:var(--line);box-shadow:0 10px 18px rgba(51,46,35,.1);backdrop-filter:blur(12px);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+    .boardWrap{position:relative;display:grid;place-items:center;min-height:calc(100vh - 220px);min-height:calc(100dvh - 220px);padding:66px 24px 42px}.mat{position:absolute;inset:calc(50% - 336px) calc(50% - 426px);border-radius:26px;background:radial-gradient(circle at top left,rgba(255,255,255,.08),transparent 30%),linear-gradient(135deg,rgba(17,14,5,.08),transparent 30%),linear-gradient(180deg,#3c495e,#273346);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}.boardFrame{position:relative;padding:14px;border-radius:18px;background:linear-gradient(180deg,#ddd3bd,#f0e5cf 46%,#d8caae);box-shadow:0 20px 36px rgba(34,48,65,.18)}canvas{display:block;width:min(100%,800px);height:auto;border-radius:8px;image-rendering:pixelated;touch-action:none}.hintBar{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:inline-flex;gap:14px;padding:10px 18px;border-radius:999px;background:rgba(255,245,228,.74);color:var(--line);box-shadow:0 10px 18px rgba(51,46,35,.1);backdrop-filter:blur(12px);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+    .mobileControls{display:none;margin-top:22px;justify-items:center;gap:14px}.touchHint{padding:10px 14px;border-radius:999px;background:rgba(255,245,228,.82);color:var(--line);font-size:.68rem;font-weight:700;letter-spacing:.14em;text-align:center;text-transform:uppercase;box-shadow:0 10px 18px rgba(51,46,35,.08)}.controlPad{display:grid;grid-template-columns:repeat(3,68px);grid-template-areas:". up ." "left down right";gap:10px;justify-content:center}.controlPad button{width:68px;height:68px;display:grid;place-items:center;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(241,231,211,.88));color:var(--primary);box-shadow:0 12px 20px rgba(51,46,35,.12);font-size:1.5rem;font-weight:800}.controlPad button:active{transform:translateY(1px) scale(.98)}.controlPad .up{grid-area:up}.controlPad .left{grid-area:left}.controlPad .down{grid-area:down}.controlPad .right{grid-area:right}
     .polaroid{right:16px;bottom:24px;width:106px;padding:8px 8px 18px;background:#fffdf7;transform:rotate(8deg)}.polaroid img{width:100%;aspect-ratio:1/1;object-fit:contain;padding:12px;background:radial-gradient(circle at center,rgba(112,181,255,.18),transparent 60%),rgba(20,17,6,.86);image-rendering:pixelated}.polaroid span{display:block;margin-top:8px;font:700 .58rem/1.2 "Space Grotesk",sans-serif;letter-spacing:.12em;text-align:center;text-transform:uppercase;color:var(--line)}
     .actions{position:fixed;left:0;right:0;bottom:0;z-index:25;display:flex;justify-content:center;gap:24px;padding:12px 18px 18px;background:rgba(255,245,228,.85);backdrop-filter:blur(18px);box-shadow:0 -1px 0 rgba(180,172,156,.18)}.action{min-width:124px;padding:14px 18px 12px;border-radius:14px;background:rgba(255,255,255,.48);color:var(--line);text-align:center}.action.primary{background:linear-gradient(135deg,#ffe48c,var(--yellow));color:var(--primary);box-shadow:0 10px 18px rgba(51,46,35,.1)}.action:disabled{opacity:.42;cursor:default}.action strong,.action span{display:block;text-transform:uppercase}.action strong{font-size:1rem;font-weight:700;letter-spacing:-.04em}.action span{margin-top:4px;font-size:.62rem;font-weight:700;letter-spacing:.16em;opacity:.72}
     .win{position:fixed;inset:0;z-index:40;display:grid;place-items:center;padding:24px;background:rgba(20,17,6,.42);backdrop-filter:blur(8px);opacity:0;visibility:hidden;transition:opacity .18s ease,visibility .18s ease}.win.open{opacity:1;visibility:visible}.winCard{max-width:460px;padding:30px 28px 24px;background:linear-gradient(180deg,#fff4c8,#ffe391);color:var(--primary);box-shadow:0 26px 44px rgba(20,17,6,.26);transform:rotate(-1.5deg)}.winCard small{display:block;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.72}.winCard h2{margin:12px 0 0;font:800 clamp(2.3rem,5vw,3.3rem)/.96 "Space Grotesk",sans-serif;letter-spacing:-.08em;text-transform:uppercase}.winCard p{margin:14px 0 0;font-family:"Space Grotesk",sans-serif;font-size:1rem;line-height:1.45;color:rgba(92,73,0,.82)}.winRow{display:flex;gap:12px;margin-top:20px}.winBtn{padding:12px 18px;background:rgba(255,255,255,.72);color:var(--primary);font-size:.92rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;box-shadow:0 10px 18px rgba(51,46,35,.1)}.winBtn.yes{background:var(--green);color:#12411d}
-    @media (max-width:980px){.game{grid-template-columns:1fr}.sidebar,.sticky,.memo,.thought,.polaroid{display:none}.workspace{padding:18px 16px 34px}.hud{position:static;transform:none;justify-content:center;margin-bottom:18px}.boardWrap{padding-top:12px}.mat{display:none}}@media (max-width:720px){.app{padding-bottom:112px}.topbar{padding:14px 16px}.brand{gap:10px;font-size:1.45rem}.brandIcon{width:24px;height:24px}.rule,.meta,.photo,.todo{display:none}.screen{inset:66px 0 104px}.monitor{width:min(92vw,680px)}.screenInner{min-height:420px;padding:42px 24px 100px}.notes{width:calc(100% - 24px)}.startNote{width:100%;text-align:center}.notes .note:nth-child(2),.notes .note:last-child{margin:0}.hintBar{width:calc(100% - 28px);justify-content:center;flex-wrap:wrap;border-radius:18px}.actions{gap:12px;padding-left:10px;padding-right:10px}.action{min-width:0;flex:1;padding-left:10px;padding-right:10px}.action strong{font-size:.86rem}.boardFrame{padding:10px}}
+    @media (max-width:980px){.game{grid-template-columns:1fr}.sidebar,.sticky,.memo,.thought,.polaroid{display:none}.workspace{padding:18px 16px 34px}.hud{position:static;transform:none;justify-content:center;margin-bottom:18px}.boardWrap{padding-top:12px}.mat{display:none}}@media (max-width:720px){.app{padding-bottom:112px}.topbar{padding:14px 16px}.brand{gap:10px;font-size:1.45rem}.brandIcon{width:24px;height:24px}.rule,.meta,.photo,.todo{display:none}.screen{inset:66px 0 104px}.monitor{width:min(92vw,680px)}.screenInner{min-height:420px;padding:42px 24px 100px}.notes{width:calc(100% - 24px)}.startNote{width:100%;text-align:center}.notes .note:nth-child(2),.notes .note:last-child{margin:0}.hintBar{width:calc(100% - 28px);justify-content:center;flex-wrap:wrap;border-radius:18px;bottom:160px}.actions{gap:12px;padding-left:10px;padding-right:10px}.action{min-width:0;flex:1;padding-left:10px;padding-right:10px}.action strong{font-size:.86rem}.boardWrap{padding:8px 0 18px;min-height:auto}.boardFrame{padding:10px}.mobileControls{display:grid}.controlPad{grid-template-columns:repeat(3,minmax(58px,68px))}.controlPad button{width:100%;height:62px;border-radius:18px}}
   </style>
 </head>
 <body>
@@ -61,10 +62,10 @@
           <div class="notes">
             <button class="startNote" id="startBtn" type="button">
               <strong>Start Game</strong>
-              <span>Press Enter or click to clock in</span>
+              <span>Press Enter or tap to clock in</span>
             </button>
             <div class="note yellow"><em>Todo</em><b>Push each folder onto a glowing tray.</b></div>
-            <div class="note blue"><em>Controls</em><b>Arrow keys move. Z undo. R reset.</b></div>
+            <div class="note blue"><em>Controls</em><b>Arrow keys, touch pad, or swipe move. Z undo. R reset.</b></div>
           </div>
         </div>
         <div class="photo">
@@ -107,7 +108,16 @@
         <div class="boardWrap">
           <div class="mat"></div>
           <div class="boardFrame"><canvas id="gameCanvas" width="800" height="600"></canvas></div>
-          <div class="hintBar"><span>Arrow keys move</span><span>Z undo</span><span>R reset</span></div>
+          <div class="hintBar"><span>Arrow keys or swipe</span><span>Z undo</span><span>R reset</span></div>
+          <div class="mobileControls" aria-label="Touch controls">
+            <div class="touchHint">Swipe on the board or use the pad</div>
+            <div class="controlPad">
+              <button class="up" data-move="up" type="button" aria-label="Move up">&uarr;</button>
+              <button class="left" data-move="left" type="button" aria-label="Move left">&larr;</button>
+              <button class="down" data-move="down" type="button" aria-label="Move down">&darr;</button>
+              <button class="right" data-move="right" type="button" aria-label="Move right">&rarr;</button>
+            </div>
+          </div>
         </div>
 
         <div class="polaroid">
@@ -145,6 +155,7 @@
     const helpBtn=document.getElementById("helpBtn"),soundBtn=document.getElementById("soundBtn");
     const thought=document.getElementById("thought"),thoughtCopy=document.getElementById("thoughtCopy"),movesValue=document.getElementById("movesValue"),efficiencyFill=document.getElementById("efficiencyFill"),efficiencyMeta=document.getElementById("efficiencyMeta");
     const win=document.getElementById("win"),winSummary=document.getElementById("winSummary"),replayBtn=document.getElementById("replayBtn"),newShiftBtn=document.getElementById("newShiftBtn"),levelMeta=document.getElementById("levelMeta");
+    const mobileMoveButtons=[...document.querySelectorAll("[data-move]")];
     const tips=[
       "\"Push the folders from the open side. Cubicle walls do not negotiate.\"",
       "\"Finished boxes glow green. That is the closest thing this company has to praise.\"",
@@ -258,6 +269,7 @@
     const bgMusic=new Audio("assets/sounds/background.mp3");bgMusic.loop=true;
     const images={},imageFiles={box:"assets/images/box.png",player_down:"assets/images/player/player_down.png",player_up:"assets/images/player/player_up.png",player_left:"assets/images/player/player_left.png",player_right:"assets/images/player/player_right.png"};
     let loaded=0,ready=false,pendingStart=false,audioStarted=false,soundOn=true,loop=0,hintsOn=true,game=null,currentLevel=0;
+    let touchStart=null;
     function cloneBoxes(boxes){return boxes.map((box)=>({name:box.name,coords:{x:box.coords.x,y:box.coords.y}}));}
     function parseLevel(layout){
       const level=[],boxes=[],targets=[];
@@ -335,31 +347,59 @@
     function nextLevel(){newGame((currentLevel+1)%LEVELS.length);}
     function beginGame(){startAudio();if(!ready){pendingStart=true;startBtn.querySelector("span").textContent="Loading paperwork...";return;}setScreen("game");newGame();}
     function toggleHints(){hintsOn=!hintsOn;thought.classList.toggle("hidden",!hintsOn);}
-    function about(){window.alert("Push every labeled crate onto a glowing tray.\nArrow keys move. Z undoes the last move. R resets the current board.");}
+    function about(){window.alert("Push every labeled crate onto a glowing tray.\nArrow keys, the touch pad, or swiping the board will move Vitya.\nZ undoes the last move. R resets the current board.");}
+    function afterAction(){if(!game)return;updateTip(game.moves);updateHud();restartLoop();}
+    function performMove(dx,dy){if(!game)return;startAudio();game.move(dx,dy);afterAction();}
+    function performUndo(){if(!game)return;startAudio();game.undo();hideWin();afterAction();}
+    function handleMoveDirection(direction){
+      switch(direction){
+        case"left":performMove(-1,0);break;
+        case"right":performMove(1,0);break;
+        case"up":performMove(0,-1);break;
+        case"down":performMove(0,1);break;
+        default:break;
+      }
+    }
     startBtn.addEventListener("click",beginGame);
     helpBtn.addEventListener("click",about);
     soundBtn.addEventListener("click",()=>{soundOn=!soundOn;soundBtn.textContent=soundOn?"Sound":"Muted";if(soundOn)startAudio();else stopAudio();});
-    undoBtn.addEventListener("click",()=>{if(!game)return;game.undo();hideWin();updateTip(game.moves);updateHud();restartLoop();});
+    undoBtn.addEventListener("click",performUndo);
     resetBtn.addEventListener("click",replayBoard);
     hintBtn.addEventListener("click",toggleHints);
     replayBtn.addEventListener("click",replayBoard);
     newShiftBtn.addEventListener("click",nextLevel);
+    for(const button of mobileMoveButtons){button.addEventListener("click",()=>{handleMoveDirection(button.dataset.move);});}
     document.addEventListener("click",()=>{if(gameScreen.classList.contains("active"))startAudio();});
+    canvas.addEventListener("pointerdown",(event)=>{
+      if(!gameScreen.classList.contains("active"))return;
+      canvas.setPointerCapture?.(event.pointerId);
+      touchStart={x:event.clientX,y:event.clientY,pointerId:event.pointerId};
+    });
+    canvas.addEventListener("pointerup",(event)=>{
+      if(!touchStart||touchStart.pointerId!==event.pointerId)return;
+      const dx=event.clientX-touchStart.x,dy=event.clientY-touchStart.y;
+      touchStart=null;
+      if(Math.abs(dx)<24&&Math.abs(dy)<24)return;
+      event.preventDefault();
+      if(Math.abs(dx)>Math.abs(dy))handleMoveDirection(dx>0?"right":"left");
+      else handleMoveDirection(dy>0?"down":"up");
+    });
+    canvas.addEventListener("pointercancel",()=>{touchStart=null;});
+    canvas.addEventListener("lostpointercapture",()=>{touchStart=null;});
     document.addEventListener("keydown",(event)=>{
       const onStart=startScreen.classList.contains("active");
       if(onStart){if(event.key==="Enter"||event.key===" "||event.key.startsWith("Arrow")){event.preventDefault();beginGame();}return;}
       if(!game)return;
-      if(event.key==="z"||event.key==="Z"){event.preventDefault();game.undo();hideWin();updateTip(game.moves);updateHud();restartLoop();return;}
+      if(event.key==="z"||event.key==="Z"){event.preventDefault();performUndo();return;}
       if(event.key==="r"||event.key==="R"){event.preventDefault();replayBoard();return;}
       if(event.key==="h"||event.key==="H"){event.preventDefault();toggleHints();return;}
       switch(event.key){
-        case"ArrowLeft":event.preventDefault();game.move(-1,0);break;
-        case"ArrowRight":event.preventDefault();game.move(1,0);break;
-        case"ArrowUp":event.preventDefault();game.move(0,-1);break;
-        case"ArrowDown":event.preventDefault();game.move(0,1);break;
+        case"ArrowLeft":event.preventDefault();performMove(-1,0);break;
+        case"ArrowRight":event.preventDefault();performMove(1,0);break;
+        case"ArrowUp":event.preventDefault();performMove(0,-1);break;
+        case"ArrowDown":event.preventDefault();performMove(0,1);break;
         default:return;
       }
-      updateTip(game.moves);updateHud();restartLoop();
     });
     updateLevelMeta();
     loadImages(()=>{if(pendingStart)beginGame();else{ctx.fillStyle=COLORS.surface;ctx.fillRect(0,0,WIDTH,HEIGHT);}});
