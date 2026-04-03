@@ -271,11 +271,11 @@
     ];
     const bgMusic=new Audio("assets/sounds/background.mp3");bgMusic.loop=true;
     const images={},imageFiles={box:"assets/images/box.png",player_down:"assets/images/player/player_down.png",player_up:"assets/images/player/player_up.png",player_left:"assets/images/player/player_left.png",player_right:"assets/images/player/player_right.png"};
-    let loaded=0,ready=false,pendingStart=false,audioStarted=false,soundOn=true,loop=0,hintsOn=true,game=null,currentLevel=0;
+    let loaded=0,ready=false,pendingStart=false,audioStarted=false,soundOn=true,loop=0,hintsOn=true,mobileHintsOn=false,game=null,currentLevel=0;
     let touchStart=null;
     function isInteractiveTarget(target){return !!target?.closest("button,.actions,.mobileMenuBtn,.winCard");}
     function setMobileMenu(open){document.body.classList.toggle("mobile-menu-open",open);mobileMenuBtn.setAttribute("aria-expanded",String(open));}
-    function syncHintVisibility(){thought.classList.toggle("hidden",!hintsOn);mobileHint.classList.toggle("hidden",!hintsOn);}
+    function syncHintVisibility(){thought.classList.toggle("hidden",!hintsOn);mobileHint.classList.toggle("hidden",!mobileHintsOn);}
     function cloneBoxes(boxes){return boxes.map((box)=>({name:box.name,coords:{x:box.coords.x,y:box.coords.y}}));}
     function parseLevel(layout){
       const level=[],boxes=[],targets=[];
@@ -349,11 +349,11 @@
     function render(){if(!game)return;game.draw();updateHud();if(!game.won&&game.checkWin()){game.won=true;showWin();return;}loop=requestAnimationFrame(render);}
     function restartLoop(){if(loop)cancelAnimationFrame(loop);loop=requestAnimationFrame(render);}
     function syncWinState(){const finalLevel=currentLevel===LEVELS.length-1;newShiftBtn.textContent=finalLevel?"Start over":"Next shift";winSummary.textContent=finalLevel?"All folders are filed. The office found six more shifts for you anyway.":"All folders are in the correct trays. Somehow that still counts as success here.";}
-    function newGame(levelIndex=currentLevel){currentLevel=(levelIndex+LEVELS.length)%LEVELS.length;game=new Game(currentLevel);hideWin();setMobileMenu(false);updateLevelMeta();syncWinState();updateTip(game.moves+currentLevel);updateHud();restartLoop();}
-    function replayBoard(){if(!game)return;game.reset();hideWin();setMobileMenu(false);updateTip(game.moves);updateHud();restartLoop();}
+    function newGame(levelIndex=currentLevel){currentLevel=(levelIndex+LEVELS.length)%LEVELS.length;game=new Game(currentLevel);mobileHintsOn=false;hideWin();setMobileMenu(false);updateLevelMeta();syncWinState();updateTip(game.moves+currentLevel);syncHintVisibility();updateHud();restartLoop();}
+    function replayBoard(){if(!game)return;game.reset();mobileHintsOn=false;hideWin();setMobileMenu(false);updateTip(game.moves);syncHintVisibility();updateHud();restartLoop();}
     function nextLevel(){newGame((currentLevel+1)%LEVELS.length);}
     function beginGame(){startAudio();if(!ready){pendingStart=true;startBtn.querySelector("span").textContent="Loading paperwork...";return;}setScreen("game");newGame();}
-    function toggleHints(){hintsOn=!hintsOn;syncHintVisibility();}
+    function toggleHints(){if(document.body.classList.contains("mobile-game"))mobileHintsOn=!mobileHintsOn;else hintsOn=!hintsOn;syncHintVisibility();}
     function about(){window.alert("Push every labeled crate onto a glowing tray.\nArrow keys or swiping the board will move Vitya.\nZ undoes the last move. R resets the current board.");}
     function afterAction(){if(!game)return;updateTip(game.moves);updateHud();restartLoop();}
     function performMove(dx,dy){if(!game)return;startAudio();game.move(dx,dy);afterAction();}
