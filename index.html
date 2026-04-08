@@ -67,7 +67,7 @@
               <span>Press Enter or tap to clock in</span>
             </button>
             <div class="note yellow"><em>Todo</em><b>Push each folder onto a glowing tray.</b></div>
-            <div class="note blue"><em>Controls</em><b>Arrow keys or swipe move. Z undo. R reset.</b></div>
+            <div class="note blue"><em>Controls</em><b>Arrow keys or swipe move.</b></div>
           </div>
         </div>
         <div class="photo">
@@ -114,7 +114,7 @@
         <div class="boardWrap">
           <div class="mat"></div>
           <div class="boardFrame"><canvas id="gameCanvas" width="800" height="600"></canvas></div>
-          <div class="hintBar"><span>Arrow keys or swipe</span><span>Z undo</span><span>R reset</span></div>
+          <div class="hintBar"><span>Arrow keys or swipe</span></div>
         </div>
 
         <div class="polaroid">
@@ -125,8 +125,6 @@
     </section>
 
     <nav class="actions" id="mobileActions">
-      <button class="action" id="undoBtn" type="button" disabled><strong>Undo</strong><span>Step back</span></button>
-      <button class="action primary" id="resetBtn" type="button" disabled><strong>Reset</strong><span>Same shift</span></button>
       <button class="action" id="hintBtn" type="button" disabled><strong>Hints</strong><span>Office thoughts</span></button>
     </nav>
   </div>
@@ -148,7 +146,7 @@
     const COLORS={surface:"#fff5e4",wall:"#efe6d1",wallShadow:"#d1c4a8",wallLight:"rgba(255,255,255,.45)",floorA:"#2f3b4c",floorB:"#364357",floorDot:"rgba(255,255,255,.08)",target:"#91f78e",targetDeep:"#006b1b",targetGlow:"rgba(145,247,142,.32)",text:"#332e23",halo:"rgba(253,211,77,.28)",shadow:"rgba(17,14,5,.32)",veil:"rgba(20,17,6,.08)"};
     const canvas=document.getElementById("gameCanvas"),ctx=canvas.getContext("2d");
     const startScreen=document.getElementById("startScreen"),gameScreen=document.getElementById("gameScreen");
-    const startBtn=document.getElementById("startBtn"),undoBtn=document.getElementById("undoBtn"),resetBtn=document.getElementById("resetBtn"),hintBtn=document.getElementById("hintBtn");
+    const startBtn=document.getElementById("startBtn"),hintBtn=document.getElementById("hintBtn");
     const helpBtn=document.getElementById("helpBtn"),soundBtn=document.getElementById("soundBtn");
     const thought=document.getElementById("thought"),thoughtCopy=document.getElementById("thoughtCopy"),mobileHint=document.getElementById("mobileHint"),mobileHintCopy=document.getElementById("mobileHintCopy"),movesValue=document.getElementById("movesValue"),efficiencyFill=document.getElementById("efficiencyFill"),efficiencyMeta=document.getElementById("efficiencyMeta");
     const win=document.getElementById("win"),winSummary=document.getElementById("winSummary"),replayBtn=document.getElementById("replayBtn"),newShiftBtn=document.getElementById("newShiftBtn"),levelMeta=document.getElementById("levelMeta");
@@ -302,10 +300,10 @@
     function stopAudio(){bgMusic.pause();audioStarted=false;}
     function loadImages(done){for(const [key,src] of Object.entries(imageFiles)){const img=new Image();img.src=src;img.onload=img.onerror=()=>{loaded+=1;if(loaded===Object.keys(imageFiles).length){ready=true;done();}};images[key]=img;}}
     function syncMobileMode(){const mobileActive=mobileQuery.matches&&gameScreen.classList.contains("active");document.body.classList.toggle("mobile-device",mobileQuery.matches);document.body.classList.toggle("mobile-game",mobileActive);if(!mobileActive)setMobileMenu(false);}
-    function setScreen(name){const start=name==="start";startScreen.classList.toggle("active",start);gameScreen.classList.toggle("active",!start);const active=!start&&!!game;resetBtn.disabled=!active;hintBtn.disabled=!active;undoBtn.disabled=!active||game.history.length===0;syncMobileMode();}
+    function setScreen(name){const start=name==="start";startScreen.classList.toggle("active",start);gameScreen.classList.toggle("active",!start);const active=!start&&!!game;hintBtn.disabled=!active;syncMobileMode();}
     function updateLevelMeta(){levelMeta.textContent=`Level: ${currentLevel+1}/${LEVELS.length}`;}
     function updateTip(seed){thoughtCopy.textContent=desktopTips[seed%desktopTips.length];mobileHintCopy.textContent=mobileTips[seed%mobileTips.length];}
-    function updateHud(){if(!game){movesValue.textContent="0";efficiencyFill.style.width="0%";efficiencyMeta.textContent=`0 / ${BOX_NAMES.length} tasks filed`;return;}const done=game.doneCount(),total=game.targets.length,pct=Math.round(done/total*100);movesValue.textContent=String(game.moves);efficiencyFill.style.width=pct+"%";efficiencyMeta.textContent=done+" / "+total+" tasks filed";undoBtn.disabled=!gameScreen.classList.contains("active")||game.history.length===0;resetBtn.disabled=!gameScreen.classList.contains("active");hintBtn.disabled=!gameScreen.classList.contains("active");}
+    function updateHud(){if(!game){movesValue.textContent="0";efficiencyFill.style.width="0%";efficiencyMeta.textContent=`0 / ${BOX_NAMES.length} tasks filed`;return;}const done=game.doneCount(),total=game.targets.length,pct=Math.round(done/total*100);movesValue.textContent=String(game.moves);efficiencyFill.style.width=pct+"%";efficiencyMeta.textContent=done+" / "+total+" tasks filed";hintBtn.disabled=!gameScreen.classList.contains("active");}
     function showWin(){win.classList.add("open");}
     function hideWin(){win.classList.remove("open");}
     class Game{
@@ -314,13 +312,12 @@
         this.level=config.level;
         this.boxes=cloneBoxes(config.boxes);
         this.targets=config.targets.map((target)=>({x:target.x,y:target.y}));
-        this.playerDirection="down";this.playerPos={x:config.playerPos.x,y:config.playerPos.y};this.moves=0;this.won=false;this.history=[];
+        this.playerDirection="down";this.playerPos={x:config.playerPos.x,y:config.playerPos.y};this.moves=0;this.won=false;
         this.initial=this.snap();
       }
       snap(){return{playerPos:{x:this.playerPos.x,y:this.playerPos.y},playerDirection:this.playerDirection,boxes:cloneBoxes(this.boxes),moves:this.moves};}
       restore(state){this.playerPos={x:state.playerPos.x,y:state.playerPos.y};this.playerDirection=state.playerDirection;this.boxes=cloneBoxes(state.boxes);this.moves=state.moves;this.won=false;}
-      reset(){this.history=[];this.restore(this.initial);}
-      undo(){const prev=this.history.pop();if(prev)this.restore(prev);}
+      reset(){this.restore(this.initial);}
       isWall(pos){return this.level[pos.y]?.[pos.x]==="#";}
       onTarget(pos){return this.targets.some((t)=>t.x===pos.x&&t.y===pos.y);}
       doneCount(){return this.boxes.filter((box)=>this.onTarget(box.coords)).length;}
@@ -328,9 +325,9 @@
         if(this.won)return;
         if(dx>0)this.playerDirection="right";if(dx<0)this.playerDirection="left";if(dy>0)this.playerDirection="down";if(dy<0)this.playerDirection="up";
         const nx=this.playerPos.x+dx,ny=this.playerPos.y+dy,next={x:nx,y:ny};if(this.isWall(next))return;
-        const box=this.boxes.find((b)=>b.coords.x===nx&&b.coords.y===ny),state=this.snap();
+        const box=this.boxes.find((b)=>b.coords.x===nx&&b.coords.y===ny);
         if(box){const boxNext={x:nx+dx,y:ny+dy};if(this.isWall(boxNext))return;if(this.boxes.some((b)=>b.coords.x===boxNext.x&&b.coords.y===boxNext.y))return;box.coords=boxNext;}
-        this.history.push(state);this.playerPos=next;this.moves+=1;
+        this.playerPos=next;this.moves+=1;
       }
       checkWin(){return this.boxes.every((box)=>this.onTarget(box.coords));}
       drawBase(){
@@ -354,10 +351,9 @@
     function nextLevel(){newGame((currentLevel+1)%LEVELS.length);}
     function beginGame(){startAudio();if(!ready){pendingStart=true;startBtn.querySelector("span").textContent="Loading paperwork...";return;}setScreen("game");newGame();}
     function toggleHints(){if(document.body.classList.contains("mobile-game"))mobileHintsOn=!mobileHintsOn;else hintsOn=!hintsOn;syncHintVisibility();}
-    function about(){window.alert("Push every labeled crate onto a glowing tray.\nArrow keys or swiping the board will move Vitya.\nZ undoes the last move. R resets the current board.");}
+    function about(){window.alert("Push every labeled crate onto a glowing tray.\nArrow keys or swiping the board will move Vitya.");}
     function afterAction(){if(!game)return;updateTip(game.moves);updateHud();restartLoop();}
     function performMove(dx,dy){if(!game)return;startAudio();game.move(dx,dy);afterAction();}
-    function performUndo(){if(!game)return;startAudio();game.undo();hideWin();setMobileMenu(false);afterAction();}
     function handleMoveDirection(direction){
       switch(direction){
         case"left":performMove(-1,0);break;
@@ -370,8 +366,6 @@
     startBtn.addEventListener("click",beginGame);
     helpBtn.addEventListener("click",about);
     soundBtn.addEventListener("click",()=>{soundOn=!soundOn;soundBtn.textContent=soundOn?"Sound":"Muted";if(soundOn)startAudio();else stopAudio();});
-    undoBtn.addEventListener("click",performUndo);
-    resetBtn.addEventListener("click",replayBoard);
     hintBtn.addEventListener("click",()=>{toggleHints();setMobileMenu(false);});
     replayBtn.addEventListener("click",replayBoard);
     newShiftBtn.addEventListener("click",nextLevel);
@@ -401,8 +395,6 @@
       const onStart=startScreen.classList.contains("active");
       if(onStart){if(event.key==="Enter"||event.key===" "||event.key.startsWith("Arrow")){event.preventDefault();beginGame();}return;}
       if(!game)return;
-      if(event.key==="z"||event.key==="Z"){event.preventDefault();performUndo();return;}
-      if(event.key==="r"||event.key==="R"){event.preventDefault();replayBoard();return;}
       if(event.key==="h"||event.key==="H"){event.preventDefault();toggleHints();return;}
       switch(event.key){
         case"ArrowLeft":event.preventDefault();performMove(-1,0);break;
