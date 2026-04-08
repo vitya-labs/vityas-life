@@ -3,5 +3,21 @@ services:
     image: ${IMAGE_NAME:-ghcr.io/markusviktor/vityas-life}:${IMAGE_TAG:-master}
     container_name: vityas-life
     restart: unless-stopped
-    ports:
-      - "${HOST_PORT:-8080}:80"
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+
+      - traefik.http.routers.vityas-life.rule=Host(`vityas-life.vityalabs.com`)
+      - traefik.http.routers.vityas-life.entrypoints=websecure
+      - traefik.http.routers.vityas-life.tls=true
+      - traefik.http.routers.vityas-life.tls.certresolver=cloudflare
+
+      - traefik.http.routers.vityas-life.middlewares=security-headers@file,gzip-compress@file
+
+      - traefik.http.services.vityas-life.loadbalancer.server.port=80
+
+networks:
+  proxy:
+    external: true
